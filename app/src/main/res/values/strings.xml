@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">SidangAkhir</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="next">NEXT</string>
+    <string name="skip">SKIP</string>
+    <string name="start">GOT IT</string>
+
+    <string name="err_msg_user">NBI/NIK Harus diisi!</string>
+    <string name="err_msg_nama">Nama Harus diisi!</string>
+    <string name="err_msg_sandi">Password Harus diisi!</string>
+    <string name="err_msg_telp">Telp Harus diisi!</string>
+    <string name="err_msg_alamat">Alamat Harus diisi!</string>
+    <string name="err_msg_email">Email Harus diisi!</string>
+
+    <string name="country_prompt">Pilih salah satu</string>
+
+    <string-array name="country_arrays">
+        <item>Mahasiswa</item>
+        <item>Dosen</item>
+    </string-array>
+</resources>

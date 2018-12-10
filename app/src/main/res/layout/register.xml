@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/endoskop_tri_19">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/input_layout_register_userid"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:counterEnabled="true"
+                        app:counterMaxLength="20"
+                        app:counterOverflowTextAppearance="@style/CounterOverFlow"
+                        app:counterTextAppearance="@style/CounterText"
+                        app:errorEnabled="true"
+                        app:errorTextAppearance="@style/MyAppTheme.TextInputLayout"
+                        app:hintTextAppearance="@style/HintText">
+
+                        <EditText
+                            android:id="@+id/eRegisterUserId"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Your User ID"
+                            android:inputType="textEmailAddress" />
+
+                    </android.support.design.widget.TextInputLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="-40dp">
+
+                        <Button
+                            android:id="@+id/btnRegisterClearUserID"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_marginTop="18dp"
+                            android:background="@drawable/close"
+                            android:visibility="invisible" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_layout_register_nama"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="100"
+                    app:counterOverflowTextAppearance="@style/CounterOverFlow"
+                    app:counterTextAppearance="@style/CounterText"
+                    app:errorEnabled="true"
+                    app:errorTextAppearance="@style/MyAppTheme.TextInputLayout"
+                    app:hintTextAppearance="@style/HintText">
+
+                    <EditText
+                        android:id="@+id/eRegisterNama"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Your Name"
+                        android:inputType="textCapWords"/>
+
+                </android.support.design.widget.TextInputLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:orientation="horizontal">
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/input_layout_register_sandi"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:counterEnabled="true"
+                        app:counterMaxLength="20"
+                        app:counterOverflowTextAppearance="@style/CounterOverFlow"
+                        app:counterTextAppearance="@style/CounterText"
+                        app:errorEnabled="true"
+                        app:errorTextAppearance="@style/MyAppTheme.TextInputLayout"
+                        app:hintTextAppearance="@style/HintText"
+                        app:passwordToggleEnabled="true">
+
+                        <EditText
+                            android:id="@+id/eRegisterSandi"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Your Password"
+                            android:inputType="textPassword" />
+
+                    </android.support.design.widget.TextInputLayout>
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Password harus memiliki setidaknya 6 karakter dengan angka atau huruf"
+                    android:textSize="15dp"
+                    android:textColor="@color/md_black"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal">
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/input_layout_register_sandi2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:counterEnabled="true"
+                        app:counterMaxLength="20"
+                        app:counterOverflowTextAppearance="@style/CounterOverFlow"
+                        app:counterTextAppearance="@style/CounterText"
+                        app:errorEnabled="true"
+                        app:errorTextAppearance="@style/MyAppTheme.TextInputLayout"
+                        app:hintTextAppearance="@style/HintText"
+                        app:passwordToggleEnabled="true">
+
+                        <EditText
+                            android:id="@+id/eRegisterSandi2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Tulis Ulang Kata Sandi"
+                            android:inputType="textPassword" />
+
+                    </android.support.design.widget.TextInputLayout>
+
+                </LinearLayout>
+
+                <!--<LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="5dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Fakultas"
+                        android:textColor="@color/md_black"/>
+
+                    <EditText
+                        android:id="@+id/eRegisterFakultas"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/md_black"
+                        android:textColorHint="@color/md_black">
+
+                    </EditText>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="5dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Jurusan"
+                        android:textColor="@color/md_black"/>
+
+                    <EditText
+                        android:id="@+id/eRegisterJurusan"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/md_black"
+                        android:textColorHint="@color/md_black">
+
+                    </EditText>
+
+                </LinearLayout>-->
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal">
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/input_layout_register_telp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:counterEnabled="true"
+                        app:counterMaxLength="13"
+                        app:counterOverflowTextAppearance="@style/CounterOverFlow"
+                        app:counterTextAppearance="@style/CounterText"
+                        app:errorEnabled="true"
+                        app:errorTextAppearance="@style/MyAppTheme.TextInputLayout"
+                        app:hintTextAppearance="@style/HintText"
+                        app:passwordToggleEnabled="true">
+
+                        <EditText
+                            android:id="@+id/eRegisterTelp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Contact Person"
+                            android:inputType="phone" />
+
+                    </android.support.design.widget.TextInputLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:orientation="horizontal">
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/input_layout_register_alamat"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:counterEnabled="true"
+                        app:counterMaxLength="200"
+                        app:counterOverflowTextAppearance="@style/CounterOverFlow"
+                        app:counterTextAppearance="@style/CounterText"
+                        app:errorEnabled="true"
+                        app:errorTextAppearance="@style/MyAppTheme.TextInputLayout"
+                        app:hintTextAppearance="@style/HintText"
+                        app:passwordToggleEnabled="true">
+
+                        <EditText
+                            android:id="@+id/eRegisterAlamat"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Alamat"
+                            android:inputType="text" />
+
+                    </android.support.design.widget.TextInputLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:orientation="horizontal">
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/input_layout_register_email"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:counterEnabled="true"
+                        app:counterMaxLength="100"
+                        app:counterOverflowTextAppearance="@style/CounterOverFlow"
+                        app:counterTextAppearance="@style/CounterText"
+                        app:errorEnabled="true"
+                        app:errorTextAppearance="@style/MyAppTheme.TextInputLayout"
+                        app:hintTextAppearance="@style/HintText"
+                        app:passwordToggleEnabled="true">
+
+                        <EditText
+                            android:id="@+id/eRegisterEmail"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Email"
+                            android:inputType="textEmailAddress" />
+
+                    </android.support.design.widget.TextInputLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Register Sebagai: "
+                        android:textSize="16dp"
+                        android:textColor="@color/md_black"/>
+
+                    <Spinner
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/spRegisterStatus"
+                        android:entries="@array/country_arrays"
+                        android:prompt="@string/country_prompt"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="20dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:gravity="bottom"
+                    android:orientation="vertical">
+
+                    <Button
+                        android:id="@+id/bRegisterDaftar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/slctdefaultbutton"
+                        android:text="DAFTAR"
+                        android:textColor="@color/md_white"
+                        android:textSize="20dp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>
