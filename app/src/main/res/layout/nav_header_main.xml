@@ -13,11 +13,11 @@
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="top"
+        android:gravity="bottom"
         android:layout_gravity="right">
 
         <ImageView
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="10dp"
             android:id="@+id/imgNavHeaderInfo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -32,7 +32,6 @@
         android:gravity="bottom">
 
         <ImageView
-            android:id="@+id/imageView"
             android:layout_width="50dp"
             android:layout_height="50dp"
             app:srcCompat="@drawable/logountag" />
@@ -45,6 +44,7 @@
             android:id="@+id/txtNavHeaderNIK"
             android:text="NIK/NBI"
             android:textColor="@color/md_black"
+            android:textStyle="bold"
             android:textSize="15dp"/>
 
         <TextView
@@ -53,6 +53,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="NAMA USER"
+            android:textStyle="bold"
             android:textColor="@color/md_black"
             android:textSize="15dp"/>
 

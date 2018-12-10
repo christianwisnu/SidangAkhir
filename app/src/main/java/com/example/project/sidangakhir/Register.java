@@ -149,7 +149,7 @@ public class Register extends AppCompatActivity {
                                             jsonRESULTS.getJSONObject("user").getString("c_status");
 
                                     hideDialog();
-                                    prefUtil.saveUserInfo(uId, nama, telp, alamat, email, statusku);
+                                    prefUtil.saveUserInfo(uId, nama, telp, alamat, email, statusku, null);
                                     Toast.makeText(Register.this, "BERHASIL REGISTRASI", Toast.LENGTH_LONG).show();
                                     startActivity(new Intent(Register.this, MainActivity.class));
                                     overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
