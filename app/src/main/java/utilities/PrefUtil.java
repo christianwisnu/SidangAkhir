@@ -30,7 +30,7 @@ public class PrefUtil {
         editor.apply(); // This line is IMPORTANT !!!
     }
 
-    public void saveUserInfo(String id, String name, String telp, String alamat, String email, String status, String judul){
+    public void saveUserInfo(String id, String name, String telp, String alamat, String email, String status, String judulku){
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString(ID, id);
@@ -43,7 +43,7 @@ public class PrefUtil {
         editor.putString(ALAMAT, alamat);
         editor.putString(EMAIL, email);
         editor.putString(STATUS, status);
-        editor.putString(JUDUL_SIDANG, judul);
+        editor.putString(JUDUL_SIDANG, judulku);
         editor.apply();
     }
 

@@ -117,7 +117,7 @@ public class Register extends AppCompatActivity {
     }
 
     private void requestRegister(String nama, String pasw, String id, String telp, String alamat, String email, String status){
-        pDialog.setMessage("Registering ...");
+        pDialog.setMessage("Registering ...\nHarap Tunggu");
         showDialog();
         Date today = Calendar.getInstance().getTime();
         String tanggalNow =df.format(today);

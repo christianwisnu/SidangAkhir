@@ -17,6 +17,7 @@
     <string name="err_msg_telp">Telp Harus diisi!</string>
     <string name="err_msg_alamat">Alamat Harus diisi!</string>
     <string name="err_msg_email">Email Harus diisi!</string>
+    <string name="err_msg_judul">Judul sidang Harus diisi!</string>
 
     <string name="country_prompt">Pilih salah satu</string>
 

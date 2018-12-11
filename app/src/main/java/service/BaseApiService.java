@@ -8,6 +8,7 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
+import utilities.JSONResponse;
 
 /**
  * Created by christian on 14/02/18.
@@ -31,6 +32,17 @@ public interface BaseApiService {
                                        @Field("alamat") String alamat,
                                        @Field("email") String email,
                                        @Field("status") String status);
+
+    @FormUrlEncoded
+    @POST("saveJudulSidang.php")
+    Call<ResponseBody> saveJudul(@Field("userid") String id,
+                                        @Field("judul") String judul,
+                                        @Field("tglNow") String tanggalNow,
+                                        @Field("nikDosen") String nikDosen);
+
+    @FormUrlEncoded
+    @POST("listDosBing.php")
+    Call<JSONResponse> getDosBing(@Field("userId") String idUser);
 
     /*@FormUrlEncoded
     @POST("saveTrans.php")

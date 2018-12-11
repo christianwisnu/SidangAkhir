@@ -98,9 +98,9 @@ public class Login extends AppCompatActivity {
     }
 
     private void requestLogin(String id, String pasw, final String status){
-        pDialog.setMessage("Login ...");
+        pDialog.setMessage("Login ...\nHarap Tunggu");
         showDialog();
-        mApiService.loginRequest(id, pasw, status)
+        mApiService.loginRequest(id, pasw, status.substring(0,1))
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -127,6 +127,7 @@ public class Login extends AppCompatActivity {
                                     String statusku = jsonRESULTS.getJSONObject("user").getString("c_status")==null?"":
                                             jsonRESULTS.getJSONObject("user").getString("c_status");
                                     String judul = jsonRESULTS.getJSONObject("user").getString("t_judulsidang")==null?"":
+                                            jsonRESULTS.getJSONObject("user").getString("t_judulsidang").equals("-")?"":
                                             jsonRESULTS.getJSONObject("user").getString("t_judulsidang");
 
                                     hideDialog();

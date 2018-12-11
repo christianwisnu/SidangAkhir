@@ -5,34 +5,49 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="Import" />
+            android:id="@+id/jadwaldosen"
+            android:icon="@mipmap/ic_date_range_black_24dp"
+            android:title="Jadwal Dosen" />
+
         <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Gallery" />
+            android:id="@+id/jadwalsidang"
+            android:icon="@mipmap/ic_action_calendar_day_black"
+            android:title="Jadwal Sidang" />
+
         <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Slideshow" />
+            android:id="@+id/pengumuman"
+            android:icon="@mipmap/ic_action_volume_up_black"
+            android:title="Pengumuman" />
+
         <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
+            android:id="@+id/uploadBukti"
+            android:icon="@mipmap/ic_action_upload_black"
+            android:title="Upload Bukti" />
+
+        <item
+            android:id="@+id/validasijudulsidang"
+            android:icon="@mipmap/ic_action_edit_black"
+            android:title="Validasi Judul" />
+
+        <item
+            android:id="@+id/inputdosensidang"
+            android:icon="@mipmap/ic_account_circle_black_24dp"
+            android:title="Input Dosen Uji" />
+
+        <item
+            android:id="@+id/validasibimbingan"
+            android:icon="@mipmap/ic_description_black_24dp"
+            android:title="Validasi Bimbingan" />
+
+        <item
+            android:id="@+id/validasipembayaran"
+            android:icon="@mipmap/ic_receipt_black_24dp"
+            android:title="Validasi Pembayaran" />
+
+        <item
+            android:id="@+id/logout"
+            android:icon="@mipmap/ic_action_exit_black"
             android:title="Logout" />
     </group>
-
-    <item android:title="Communicate">
-        <menu>
-            <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
-            <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
-        </menu>
-    </item>
 
 </menu>

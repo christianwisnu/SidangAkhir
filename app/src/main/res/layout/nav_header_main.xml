@@ -8,16 +8,16 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_horizontal_margin"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="bottom"
+        android:gravity="top"
         android:layout_gravity="right">
 
         <ImageView
-            android:layout_marginTop="10dp"
             android:id="@+id/imgNavHeaderInfo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -53,8 +53,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="NAMA USER"
-            android:textStyle="bold"
             android:textColor="@color/md_black"
+            android:textStyle="bold"
             android:textSize="15dp"/>
 
     </LinearLayout>
