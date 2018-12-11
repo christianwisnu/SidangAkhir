@@ -98,7 +98,7 @@ public class Login extends AppCompatActivity {
     }
 
     private void requestLogin(String id, String pasw, final String status){
-        pDialog.setMessage("Login ...");
+        pDialog.setMessage("Login ...\nHarap Tunggu");
         showDialog();
         mApiService.loginRequest(id, pasw, status)
                 .enqueue(new Callback<ResponseBody>() {
@@ -108,10 +108,10 @@ public class Login extends AppCompatActivity {
                             try {
                                 JSONObject jsonRESULTS = new JSONObject(response.body().string());
                                 if (jsonRESULTS.getString("value").equals("false")){
-                                    String nama = jsonRESULTS.getJSONObject("user").getString("vc_user")==null?"":
-                                            jsonRESULTS.getJSONObject("user").getString("vc_user");
-                                    String uId = jsonRESULTS.getJSONObject("user").getString("c_id")==null?"":
-                                            jsonRESULTS.getJSONObject("user").getString("c_id");
+                                    String nama = jsonRESULTS.getJSONObject("user").getString("vc_username")==null?"":
+                                            jsonRESULTS.getJSONObject("user").getString("vc_username");
+                                    String uId = jsonRESULTS.getJSONObject("user").getString("c_userid")==null?"":
+                                            jsonRESULTS.getJSONObject("user").getString("c_userid");
                                     /*Integer idFak = jsonRESULTS.getJSONObject("user").getInt("id_fak");
                                     String nmFak = jsonRESULTS.getJSONObject("user").getString("nama_fak")==null?"":
                                             jsonRESULTS.getJSONObject("user").getString("nama_fak");
@@ -126,9 +126,12 @@ public class Login extends AppCompatActivity {
                                             jsonRESULTS.getJSONObject("user").getString("vc_email");
                                     String statusku = jsonRESULTS.getJSONObject("user").getString("c_status")==null?"":
                                             jsonRESULTS.getJSONObject("user").getString("c_status");
+                                    String judul = jsonRESULTS.getJSONObject("user").getString("t_judulsidang")==null?"":
+                                            jsonRESULTS.getJSONObject("user").getString("t_judulsidang").equals("-")?"":
+                                            jsonRESULTS.getJSONObject("user").getString("t_judulsidang");
 
                                     hideDialog();
-                                    prefUtil.saveUserInfo(uId, nama, telp, alamat, email, statusku);
+                                    prefUtil.saveUserInfo(uId, nama, telp, alamat, email, statusku, judul);
                                     Toast.makeText(Login.this, jsonRESULTS.getString("message"), Toast.LENGTH_SHORT).show();
                                     startActivity(new Intent(Login.this, MainActivity.class));
                                     overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
