@@ -1,14 +1,9 @@
 package list;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -23,96 +18,50 @@ import com.android.volley.error.ServerError;
 import com.android.volley.error.TimeoutError;
 import com.android.volley.error.VolleyError;
 import com.android.volley.request.JsonObjectRequest;
-import com.example.project.sidangakhir.PengumumanActivity;
 import com.example.project.sidangakhir.R;
-import com.example.project.sidangakhir.ViewPengumumanActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.Map;
 
-import adapter.AdpPengumuman;
-import model.master.ColPengumuman;
+import adapter.AdpValidasiJudul;
+import model.master.ColSidang;
 import utilities.AppController;
 import utilities.Link;
-import utilities.Utils;
 
-public class FrgPengumuman extends Fragment {
+public class FrgValidasiJudul extends android.support.v4.app.Fragment {
 
     private View vupload;
-    private ImageView ImgAdd;
-    private AdpPengumuman adapter;
+    private AdpValidasiJudul adapter;
     private ListView lsvupload;
-    private ArrayList<ColPengumuman> columnlist= new ArrayList<ColPengumuman>();
+    private ArrayList<ColSidang> columnlist= new ArrayList<ColSidang>();
     private TextView tvstatus;
     private ProgressBar prbstatus;
-    private String getUpload	="getListPengumuman.php";
-    private String status, userId;
-    private DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    private Date tglNowLast, tglFrom;
+    private String getUpload	="getJudulBlmValidasi1.php";
+    private String idDosen, status;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Bundle bundle	 = this.getArguments();
         if (bundle!=null){
             status	= bundle.getString("status");
-            userId = bundle.getString("userId");
+            idDosen	= bundle.getString("userId");
         }
-        vupload     = inflater.inflate(R.layout.list_pengumuman,container,false);
-        ImgAdd		= (ImageView)vupload.findViewById(R.id.imgListPengumumanAdd);
-        lsvupload	= (ListView)vupload.findViewById(R.id.listPengumuman);
-        tvstatus	= (TextView)vupload.findViewById(R.id.txtListPengumumanStatus);
-        prbstatus	= (ProgressBar)vupload.findViewById(R.id.prbListPengumumanStatus);
+        vupload     = inflater.inflate(R.layout.list_validasi_judul,container,false);
+        lsvupload	= (ListView)vupload.findViewById(R.id.listValidasiJudul);
+        tvstatus	= (TextView)vupload.findViewById(R.id.txtListValidasiJudulStatus);
+        prbstatus	= (ProgressBar)vupload.findViewById(R.id.prbListValidasiJudulStatus);
 
-        Calendar cal = Calendar.getInstance();
-        tglFrom = Utils.getFirstTimeOfDay(cal.getTime());
-        tglNowLast = Utils.getLastTimeOfDay(cal.getTime());
-        adapter		= new AdpPengumuman(getActivity(), R.layout.col_pengumuman, columnlist, status, userId);
+        adapter		= new AdpValidasiJudul(getActivity(), R.layout.col_validasi_sidang, columnlist, idDosen);
         lsvupload.setAdapter(adapter);
-        getDataUpload(Link.BASE_URL_API+getUpload, df.format(tglFrom), df.format(tglNowLast));
-
-        if(status.equals("A")){
-            ImgAdd.setVisibility(View.VISIBLE);
-        }else{
-            ImgAdd.setVisibility(View.INVISIBLE);
-        }
-
-        ImgAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(status.equals("A")){
-                    Intent i  = new Intent(getActivity(), PengumumanActivity.class);
-                    i.putExtra("Status", "ADD");
-                    startActivity(i);
-                    getActivity().overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-                }
-            }
-        });
-
-        lsvupload.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> Parent, View view, int position,
-                                    long id) {
-                Intent i = new Intent(getContext(), ViewPengumumanActivity.class);
-                i.putExtra("idPengumuman", columnlist.get(position).getId());
-                i.putExtra("judul", columnlist.get(position).getJudul());
-                i.putExtra("isi", columnlist.get(position).getIsi());
-                startActivity(i);
-            }
-        });
+        getDataUpload(Link.BASE_URL_API+getUpload, idDosen);
         return vupload;
     }
 
-    private void getDataUpload(String Url, final String tanggalFrom, final String tanggalTo){
+    private void getDataUpload(String Url, final String userDosen){
         tvstatus.setVisibility(View.GONE);
         prbstatus.setVisibility(View.VISIBLE);
         JsonObjectRequest jsonget = new JsonObjectRequest(Request.Method.GET, Url, null,
@@ -129,12 +78,12 @@ public class FrgPengumuman extends Fragment {
                                 JSONArray JsonArray = response.getJSONArray("uploade");
                                 for (int i = 0; i < JsonArray.length(); i++) {
                                     JSONObject object = JsonArray.getJSONObject(i);
-                                    ColPengumuman colums 	= new ColPengumuman();
-                                    colums.setId(object.getInt("i_idpengumuman"));
-                                    colums.setJudul(object.getString("t_judul"));
-                                    colums.setIsi(object.getString("t_isi"));
-                                    colums.setTglAwal(object.getString("dt_start"));
-                                    colums.setTglFinish(object.getString("dt_finish"));
+                                    ColSidang colums 	= new ColSidang();
+                                    colums.setId(object.getInt("i_id"));
+                                    colums.setJudulSidang(object.getString("t_judulsidang"));
+                                    colums.setNbiMhs(object.getString("c_nbi_mhs"));
+                                    colums.setNamaMhs(object.getString("vc_username"));
+                                    colums.setCdstatus(object.getString("c_dstatus"));
                                     columnlist.add(colums);
                                 }
                             }else{
@@ -178,8 +127,7 @@ public class FrgPengumuman extends Fragment {
             @Override
             protected java.util.Map<String, String> getParams() {
                 java.util.Map<String, String> params = new HashMap<String, String>();
-                params.put("tglFrom", tanggalFrom);
-                params.put("tglTo", tanggalTo);
+                params.put("userId", userDosen);
                 return params;
             }
             @Override
@@ -196,8 +144,8 @@ public class FrgPengumuman extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        adapter		= new AdpPengumuman(getActivity(), R.layout.col_pengumuman, columnlist, status, userId);
+        adapter		= new AdpValidasiJudul(getActivity(), R.layout.col_validasi_sidang, columnlist, idDosen);
         lsvupload.setAdapter(adapter);
-        getDataUpload(Link.BASE_URL_API+getUpload, df.format(tglFrom), df.format(tglNowLast));
+        getDataUpload(Link.BASE_URL_API+getUpload, idDosen);
     }
 }

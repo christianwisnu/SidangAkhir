@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/txtInfoSidangMainJudul"
+            android:text="JUDUL"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/md_black"
+            android:textSize="15dp"/>
+
+        <TextView
+            android:layout_marginTop="5dp"
+            android:id="@+id/txtInfoSidangMainStatus"
+            android:text="STATUS JUDUL"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/md_black"
+            android:textSize="15dp"/>
+
+        <TextView
+            android:layout_marginTop="5dp"
+            android:id="@+id/txtInfoSidangMainDosBing"
+            android:text="DOSEN PEMBIMBING"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/md_black"
+            android:textSize="15dp"/>
+
+        <TextView
+            android:layout_marginTop="5dp"
+            android:id="@+id/txtInfoSidangMainDosUji1"
+            android:text="DOSEN UJI1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/md_black"
+            android:textSize="15dp"/>
+
+        <TextView
+            android:layout_marginTop="5dp"
+            android:id="@+id/txtInfoSidangMainDosUji2"
+            android:text="DOSEN UJI2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/md_black"
+            android:textSize="15dp"/>
+
+        <TextView
+            android:layout_marginTop="5dp"
+            android:id="@+id/txtInfoSidangMainDosTglSidang"
+            android:text="TANGGAL MAJU SIDANG"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/md_black"
+            android:textSize="15dp"/>
+
+        <TextView
+            android:layout_marginTop="5dp"
+            android:id="@+id/txtInfoSidangMainDosNoUrut"
+            android:text="NO URUT"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/md_black"
+            android:textSize="15dp"/>
+
+    </LinearLayout>
+
+</LinearLayout>

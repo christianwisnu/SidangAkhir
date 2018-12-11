@@ -1,8 +1,42 @@
 <resources>
     <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="MarginLayout">5dp</dimen>
+    <dimen name="MarginButton">20dp</dimen>
+    <dimen name="actionbar_dimen">56dp</dimen>
+    <dimen name="Button_HW">36dp</dimen>
+    <dimen name="card">10dp</dimen>
+    <dimen name="paddingtext">5dp</dimen>
+    <dimen name="paddingimage">5dp</dimen>
+    <dimen name="WButton">250dp</dimen>
+    <dimen name="HButton">50dp</dimen>
+    <dimen name="HWImgProfile">80dp</dimen>
+    <dimen name="HWColImagePost">150dp</dimen>
+    <dimen name="HImgProfileBayground">200dp</dimen>
+    <dimen name="WListViewMenu">250dp</dimen>
+    <dimen name="HWButtonCycle">70dp</dimen>
+    <dimen name="HImageUpload">250dp</dimen>
+    <dimen name="HWColUpload">300dp</dimen>
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
-    <dimen name="nav_header_vertical_spacing">4dp</dimen>
-    <dimen name="nav_header_height">176dp</dimen>
+
+    <dimen name="paddin_lef_menu_main">10dp</dimen>
+    <dimen name="margin_left_menu_main">10dp</dimen>
+    <dimen name="margin_col_main_main">10dp</dimen>
+    <dimen name="height_col_Left_main">50dp</dimen>
+    <dimen name="button_menu_height">48dip</dimen>
+    <dimen name="avatar_size">44dp</dimen>
+    <dimen name="main_margin">14dp</dimen>
+    <dimen name="second_margin">10dp</dimen>
+    <dimen name="third_margin">8dp</dimen>
+    <dimen name="title_text_size">16sp</dimen>
+    <dimen name="subtitle_text_size">12sp</dimen>
+    <dimen name="fourth_margin">4dip</dimen>
+    <dimen name="col_data_site_margin">5dp</dimen>
+    <dimen name="text_margin">5dp</dimen>
+    <dimen name="hw_img_cycle_bottom">60dp</dimen>
+    <dimen name="hw_col_document_picture">150dp</dimen>
+    <dimen name="ButtonDetails">60dp</dimen>
+    <dimen name="nav_header_vertical_spacing">16dp</dimen>
+    <dimen name="nav_header_height">190dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
 </resources>

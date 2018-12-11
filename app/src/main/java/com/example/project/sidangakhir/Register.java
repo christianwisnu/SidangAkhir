@@ -1,6 +1,8 @@
 package com.example.project.sidangakhir;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
@@ -85,9 +87,24 @@ public class Register extends AppCompatActivity {
                 validatePasw(ePassword.length()) && validatePasw2(ePassword2.length()) &&
                 validateAlamat(eAlamat.length()) && validateTelp(eTelp.length()) &&
                 validateEmail(eEmail.length()) ){
-            requestRegister(eNama.getText().toString(), ePassword.getText().toString(), eUserId.getText().toString(),
-                    eTelp.getText().toString(), eAlamat.getText().toString(), eEmail.getText().toString(),
-                    String.valueOf(spStatus.getSelectedItem()));
+            AlertDialog.Builder builder = new AlertDialog.Builder(Register.this);
+            builder.setTitle("Konfirmasi");
+            builder.setMessage("Data akan diproses?")
+                    .setCancelable(false)
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            requestRegister(eNama.getText().toString(), ePassword.getText().toString(), eUserId.getText().toString(),
+                                    eTelp.getText().toString(), eAlamat.getText().toString(), eEmail.getText().toString(),
+                                    String.valueOf(spStatus.getSelectedItem()));
+                        }
+                    })
+                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                        }
+                    });
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
         }
     }
 

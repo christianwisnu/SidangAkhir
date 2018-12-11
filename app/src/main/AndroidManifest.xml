@@ -30,6 +30,8 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".Login" />
         <activity android:name=".Register" />
+        <activity android:name=".PengumumanActivity" />
+        <activity android:name=".ViewPengumumanActivity" />
         <activity android:name="list.ListDosenPembimbing" />
         <activity android:name=".MainActivity"
             android:theme="@style/AppTheme"/>

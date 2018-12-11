@@ -41,6 +41,16 @@ public class Utils {
         }
     }
 
+    public static java.util.Date getFirstTimeOfDay(java.util.Date date){
+        Calendar tempCalendar = Calendar.getInstance();
+        tempCalendar.setTime(date);
+        tempCalendar.set(Calendar.HOUR_OF_DAY,00);
+        tempCalendar.set(Calendar.MINUTE,00);
+        tempCalendar.set(Calendar.SECOND,00);
+        tempCalendar.set(Calendar.MILLISECOND,000);
+        return tempCalendar.getTime();
+    }
+
     public static java.util.Date getLastTimeOfDay(java.util.Date date){
         Calendar tempCalendar = Calendar.getInstance();
         tempCalendar.setTime(date);

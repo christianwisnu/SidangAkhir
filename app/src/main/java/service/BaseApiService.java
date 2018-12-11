@@ -44,6 +44,25 @@ public interface BaseApiService {
     @POST("listDosBing.php")
     Call<JSONResponse> getDosBing(@Field("userId") String idUser);
 
+    @FormUrlEncoded
+    @POST("insertPengumuman.php")
+    Call<ResponseBody> insertPengumuman(@Field("judul") String judul,
+                                       @Field("isi") String isi,
+                                       @Field("tglFrom") String tglFrom,
+                                       @Field("tglTo") String tglTo,
+                                       @Field("userId") String userId,
+                                       @Field("tglNow") String tglNow);
+
+    @FormUrlEncoded
+    @POST("updatePengumuman.php")
+    Call<ResponseBody> updatePengumuman(@Field("id") String idPengumuman,
+                                        @Field("judul") String judul,
+                                        @Field("isi") String isi,
+                                        @Field("tglFrom") String tglFrom,
+                                        @Field("tglTo") String tglTo,
+                                        @Field("userId") String userId,
+                                        @Field("tglNow") String tglNow);
+
     /*@FormUrlEncoded
     @POST("saveTrans.php")
     Call<ResponseBody> savePemeriksaan(@Field("pasienId") String pasienId,

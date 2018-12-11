@@ -39,6 +39,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import list.FrgPengumuman;
+import list.FrgValidasiJudul;
 import list.ListDosenPembimbing;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -56,6 +57,7 @@ public class MainActivity extends AppCompatActivity
     private NavigationView navigationView;
     private PrefUtil pref;
     private TextView txtId, txtNama, txtDosBing;
+    private TextView txtInfoJudul, txtInfoStatus, txtInfoDosBing, txtInfoDosUji1, txtInfoDosUji2, txtInfoTglSidang, txtInfoNoUrut;
     private ImageView imgInfo;
     private SharedPreferences shared;
     private String userId, username, judul, telp, alamat, email, status;
@@ -112,6 +114,23 @@ public class MainActivity extends AppCompatActivity
         String a = status.equals("M")?"NBI: ":"NIK: ";
         txtId.setText(a+userId);
         txtNama.setText(username);
+
+        LayoutInflater liInfo = LayoutInflater.from(MainActivity.this);
+        View promptsViewInfo = liInfo.inflate(R.layout.info_sidang_main, null);
+        txtInfoJudul = (TextView) promptsViewInfo.findViewById(R.id.txtInfoSidangMainJudul);
+        txtInfoStatus = (TextView) promptsViewInfo.findViewById(R.id.txtInfoSidangMainStatus);
+        txtInfoDosBing = (TextView) promptsViewInfo.findViewById(R.id.txtInfoSidangMainDosBing);
+        txtInfoDosUji1 = (TextView) promptsViewInfo.findViewById(R.id.txtInfoSidangMainDosUji1);
+        txtInfoDosUji2 = (TextView) promptsViewInfo.findViewById(R.id.txtInfoSidangMainDosUji2);
+        txtInfoTglSidang = (TextView) promptsViewInfo.findViewById(R.id.txtInfoSidangMainDosTglSidang);
+        txtInfoNoUrut = (TextView) promptsViewInfo.findViewById(R.id.txtInfoSidangMainDosNoUrut);
+
+        imgInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
         LayoutInflater li = LayoutInflater.from(MainActivity.this);
         View promptsView = li.inflate(R.layout.inputjudul, null);
@@ -347,7 +366,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.jadwaldosen) {
 
         } else if (id == R.id.pengumuman) {
-            changeFragmentListUploadKriteria(new FrgPengumuman(), status);
+            changeFragmentListUploadKriteria(new FrgPengumuman(), status, userId);
         } else if (id == R.id.uploadBukti) {
 
         } else if (id == R.id.logout) {
@@ -356,7 +375,7 @@ public class MainActivity extends AppCompatActivity
             overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
             finish();
         } else if (id == R.id.validasijudulsidang) {
-
+            changeFragmentListUploadKriteria(new FrgValidasiJudul(), status, userId);
         } else if (id == R.id.inputdosensidang) {
 
         } else if (id == R.id.validasibimbingan) {
@@ -369,7 +388,7 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    private void changeFragmentListUploadKriteria(Fragment targetFragment, String status){
+    private void changeFragmentListUploadKriteria(Fragment targetFragment, String status, String userId){
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.FrmMainMenu, targetFragment)
@@ -378,6 +397,7 @@ public class MainActivity extends AppCompatActivity
                 .commit();
         Bundle extras = new Bundle();
         extras.putString("status", status);
+        extras.putString("userId", userId);
         targetFragment.setArguments(extras);
         drawer.closeDrawer(START);
     }
