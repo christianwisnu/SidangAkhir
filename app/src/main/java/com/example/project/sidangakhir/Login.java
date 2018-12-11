@@ -100,7 +100,7 @@ public class Login extends AppCompatActivity {
     private void requestLogin(String id, String pasw, final String status){
         pDialog.setMessage("Login ...\nHarap Tunggu");
         showDialog();
-        mApiService.loginRequest(id, pasw, status)
+        mApiService.loginRequest(id, pasw, status.substring(0,1))
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

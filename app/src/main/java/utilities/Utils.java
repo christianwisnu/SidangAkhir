@@ -3,6 +3,7 @@ package utilities;
 import android.content.Context;
 
 import java.io.File;
+import java.util.Calendar;
 
 public class Utils {
 
@@ -38,5 +39,15 @@ public class Utils {
         } else {
             return false;
         }
+    }
+
+    public static java.util.Date getLastTimeOfDay(java.util.Date date){
+        Calendar tempCalendar = Calendar.getInstance();
+        tempCalendar.setTime(date);
+        tempCalendar.set(Calendar.HOUR_OF_DAY,23);
+        tempCalendar.set(Calendar.MINUTE,59);
+        tempCalendar.set(Calendar.SECOND,59);
+        tempCalendar.set(Calendar.MILLISECOND,999);
+        return tempCalendar.getTime();
     }
 }

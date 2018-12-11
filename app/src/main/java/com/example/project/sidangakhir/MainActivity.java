@@ -1,6 +1,7 @@
 package com.example.project.sidangakhir;
 
 import android.app.Activity;
+import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +38,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import list.FrgPengumuman;
 import list.ListDosenPembimbing;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -44,6 +47,8 @@ import retrofit2.Response;
 import service.BaseApiService;
 import utilities.Link;
 import utilities.PrefUtil;
+
+import static android.view.Gravity.START;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -61,6 +66,7 @@ public class MainActivity extends AppCompatActivity
     private ProgressDialog pDialog;
     private DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private int RESULT_DOSBING = 2;
+    private DrawerLayout drawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +97,7 @@ public class MainActivity extends AppCompatActivity
         }
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -223,7 +229,6 @@ public class MainActivity extends AppCompatActivity
         nav_Menu.findItem(R.id.inputdosensidang).setVisible(false);
         nav_Menu.findItem(R.id.validasibimbingan).setVisible(false);
         nav_Menu.findItem(R.id.validasipembayaran).setVisible(false);
-        nav_Menu.findItem(R.id.inputpengumuman).setVisible(false);
     }
 
     private void menuDosen(){
@@ -239,7 +244,6 @@ public class MainActivity extends AppCompatActivity
         nav_Menu.findItem(R.id.inputdosensidang).setVisible(false);
         nav_Menu.findItem(R.id.validasibimbingan).setVisible(false);
         nav_Menu.findItem(R.id.validasipembayaran).setVisible(false);
-        nav_Menu.findItem(R.id.inputpengumuman).setVisible(false);
     }
 
     private void menuAdmin(){
@@ -247,7 +251,7 @@ public class MainActivity extends AppCompatActivity
         Menu nav_Menu = navigationView.getMenu();
         nav_Menu.findItem(R.id.jadwaldosen).setVisible(false);
         nav_Menu.findItem(R.id.jadwalsidang).setVisible(false);
-        nav_Menu.findItem(R.id.pengumuman).setVisible(false);
+        nav_Menu.findItem(R.id.pengumuman).setVisible(true);
         nav_Menu.findItem(R.id.uploadBukti).setVisible(false);
         nav_Menu.findItem(R.id.logout).setVisible(true);
 
@@ -255,7 +259,6 @@ public class MainActivity extends AppCompatActivity
         nav_Menu.findItem(R.id.inputdosensidang).setVisible(true);
         nav_Menu.findItem(R.id.validasibimbingan).setVisible(true);
         nav_Menu.findItem(R.id.validasipembayaran).setVisible(true);
-        nav_Menu.findItem(R.id.inputpengumuman).setVisible(true);
     }
 
     private void simpanJudul(final String userId, final String namaJudul, final String nikDosen){
@@ -344,7 +347,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.jadwaldosen) {
 
         } else if (id == R.id.pengumuman) {
-
+            changeFragmentListUploadKriteria(new FrgPengumuman(), status);
         } else if (id == R.id.uploadBukti) {
 
         } else if (id == R.id.logout) {
@@ -360,13 +363,23 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.validasipembayaran) {
 
-        } else if (id == R.id.inputpengumuman) {
-
         }
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void changeFragmentListUploadKriteria(Fragment targetFragment, String status){
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.FrmMainMenu, targetFragment)
+                .setTransitionStyle(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .setCustomAnimations(R.anim.blink, R.anim.fade_in)
+                .commit();
+        Bundle extras = new Bundle();
+        extras.putString("status", status);
+        targetFragment.setArguments(extras);
+        drawer.closeDrawer(START);
     }
 
     @Override

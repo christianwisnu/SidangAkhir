@@ -35,11 +35,6 @@
             android:title="Input Dosen Uji" />
 
         <item
-            android:id="@+id/inputpengumuman"
-            android:icon="@mipmap/ic_action_volume_up_black"
-            android:title="Pengumuman" />
-
-        <item
             android:id="@+id/validasibimbingan"
             android:icon="@mipmap/ic_description_black_24dp"
             android:title="Validasi Bimbingan" />
