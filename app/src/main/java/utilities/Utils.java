@@ -1,11 +1,22 @@
 package utilities;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.widget.ImageView;
+
+import com.example.project.sidangakhir.R;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
+import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 
 import java.io.File;
 import java.util.Calendar;
 
 public class Utils {
+
+    private static final ImageLoader imgloader = ImageLoader.getInstance();
 
     public static void freeMemory(){
         System.runFinalization();
@@ -59,5 +70,23 @@ public class Utils {
         tempCalendar.set(Calendar.SECOND,59);
         tempCalendar.set(Calendar.MILLISECOND,999);
         return tempCalendar.getTime();
+    }
+
+    public static void getCycleImage(String url, ImageView img, Context context){
+        DisplayImageOptions options;
+        options = new DisplayImageOptions.Builder()
+                .displayer(new RoundedBitmapDisplayer((int) 50.5f))
+                .showImageOnLoading(R.mipmap.ic_launcher)
+                .showImageForEmptyUri(R.mipmap.ic_launcher)
+                .showImageOnFail(R.mipmap.ic_launcher)
+                .cacheInMemory(true)
+                .cacheOnDisk(true)
+                .considerExifParams(true)
+                .bitmapConfig(Bitmap.Config.RGB_565)
+                .imageScaleType(ImageScaleType.EXACTLY_STRETCHED)
+                .build();
+        imgloader.init(ImageLoaderConfiguration.createDefault(context));
+        imgloader.displayImage(url, img, options);
+        return;
     }
 }

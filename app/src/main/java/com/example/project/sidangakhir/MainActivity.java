@@ -1,16 +1,20 @@
 package com.example.project.sidangakhir;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,25 +33,42 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.error.AuthFailureError;
+import com.android.volley.error.NetworkError;
+import com.android.volley.error.NoConnectionError;
+import com.android.volley.error.ParseError;
+import com.android.volley.error.ServerError;
+import com.android.volley.error.TimeoutError;
+import com.android.volley.error.VolleyError;
+import com.android.volley.request.JsonObjectRequest;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
 import list.FrgPengumuman;
 import list.FrgValidasiJudul;
 import list.ListDosenPembimbing;
+import model.master.ColPengumuman;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import service.BaseApiService;
+import utilities.AppController;
 import utilities.Link;
 import utilities.PrefUtil;
+import utilities.RequestPermissionHandler;
 
 import static android.view.Gravity.START;
 
@@ -67,13 +88,25 @@ public class MainActivity extends AppCompatActivity
     private BaseApiService mApiService;
     private ProgressDialog pDialog;
     private DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private DateFormat df2 = new SimpleDateFormat("dd-MM-yyyy");
     private int RESULT_DOSBING = 2;
     private DrawerLayout drawer;
+    private String getInfo	="getSidangMhs.php";
+    private View promptsViewInfo;
+    private LayoutInflater liInfo;
+    private RequestPermissionHandler mRequestPermissionHandler;
+    private List<String> listPermissionsNeeded;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            mRequestPermissionHandler = new RequestPermissionHandler();
+            checkAndRequestPermissions();
+            openPermission();
+        }
+
         pref = new PrefUtil(this);
         mApiService         = Link.getAPIService();
         pDialog = new ProgressDialog(this);
@@ -113,10 +146,10 @@ public class MainActivity extends AppCompatActivity
         imgInfo = (ImageView) header.findViewById(R.id.imgNavHeaderInfo);
         String a = status.equals("M")?"NBI: ":"NIK: ";
         txtId.setText(a+userId);
-        txtNama.setText(username);
+        txtNama.setText("Nama: "+username);
 
-        LayoutInflater liInfo = LayoutInflater.from(MainActivity.this);
-        View promptsViewInfo = liInfo.inflate(R.layout.info_sidang_main, null);
+        liInfo = LayoutInflater.from(MainActivity.this);
+        promptsViewInfo = liInfo.inflate(R.layout.info_sidang_main, null);
         txtInfoJudul = (TextView) promptsViewInfo.findViewById(R.id.txtInfoSidangMainJudul);
         txtInfoStatus = (TextView) promptsViewInfo.findViewById(R.id.txtInfoSidangMainStatus);
         txtInfoDosBing = (TextView) promptsViewInfo.findViewById(R.id.txtInfoSidangMainDosBing);
@@ -128,7 +161,9 @@ public class MainActivity extends AppCompatActivity
         imgInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if(status.equals("M")){
+                    getInfoSidang(Link.BASE_URL_API+getInfo, userId, "INFO");
+                }
             }
         });
 
@@ -241,7 +276,8 @@ public class MainActivity extends AppCompatActivity
         nav_Menu.findItem(R.id.jadwaldosen).setVisible(true);
         nav_Menu.findItem(R.id.jadwalsidang).setVisible(true);
         nav_Menu.findItem(R.id.pengumuman).setVisible(true);
-        nav_Menu.findItem(R.id.uploadBukti).setVisible(true);
+        //nav_Menu.findItem(R.id.uploadBuktiPembayaran).setVisible(true);
+        //nav_Menu.findItem(R.id.uploadBuktiBimbingan).setVisible(true);
         nav_Menu.findItem(R.id.logout).setVisible(true);
 
         nav_Menu.findItem(R.id.validasijudulsidang).setVisible(false);
@@ -256,7 +292,8 @@ public class MainActivity extends AppCompatActivity
         nav_Menu.findItem(R.id.jadwaldosen).setVisible(false);
         nav_Menu.findItem(R.id.jadwalsidang).setVisible(true);
         nav_Menu.findItem(R.id.pengumuman).setVisible(true);
-        nav_Menu.findItem(R.id.uploadBukti).setVisible(false);
+        //nav_Menu.findItem(R.id.uploadBuktiPembayaran).setVisible(false);
+        //nav_Menu.findItem(R.id.uploadBuktiBimbingan).setVisible(false);
         nav_Menu.findItem(R.id.logout).setVisible(true);
 
         nav_Menu.findItem(R.id.validasijudulsidang).setVisible(true);
@@ -271,13 +308,157 @@ public class MainActivity extends AppCompatActivity
         nav_Menu.findItem(R.id.jadwaldosen).setVisible(false);
         nav_Menu.findItem(R.id.jadwalsidang).setVisible(false);
         nav_Menu.findItem(R.id.pengumuman).setVisible(true);
-        nav_Menu.findItem(R.id.uploadBukti).setVisible(false);
+        //nav_Menu.findItem(R.id.uploadBuktiPembayaran).setVisible(false);
+        //nav_Menu.findItem(R.id.uploadBuktiBimbingan).setVisible(false);
         nav_Menu.findItem(R.id.logout).setVisible(true);
 
         nav_Menu.findItem(R.id.validasijudulsidang).setVisible(false);
         nav_Menu.findItem(R.id.inputdosensidang).setVisible(true);
         nav_Menu.findItem(R.id.validasibimbingan).setVisible(true);
         nav_Menu.findItem(R.id.validasipembayaran).setVisible(true);
+    }
+
+    private void setDataInfo(String judul, String status, String dosbing, String dosUji1, String dosUji2,
+                             String tglSidang, String noUrut){
+        if(tglSidang!=null){
+            Date tgl=null;
+            try{
+                tgl = new SimpleDateFormat("yyyy-MM-dd").parse(tglSidang);
+            }catch (Exception e){e.getMessage();}
+            txtInfoTglSidang.setText("Tanggal Sidang = "+df2.format(tgl));
+        }else{
+            txtInfoTglSidang.setText("Tanggal Sidang = -");
+        }
+        txtInfoJudul.setText("Judul Sidang = "+judul);
+        txtInfoStatus.setText("Status = "+status);
+        txtInfoDosBing.setText("Nama/NIK Dosen Pembimbing = "+dosbing);
+        txtInfoDosUji1.setText("Nama/NIK Dosen Penguji 1 = "+dosUji1);
+        txtInfoDosUji2.setText("Nama/NIK Dosen Penguji 2 = "+dosUji2);
+        txtInfoNoUrut.setText(noUrut.equals("0")?"No Urut = -":"No Urut = "+noUrut);
+    }
+
+    private void getInfoSidang(String Url, final String nbiMhs, final String menu){
+        //MENU = INFO / BAYAR / BIMBINGAN
+        pDialog.setMessage("Ambil Data ...\nHarap Tunggu");
+        showDialog();
+        JsonObjectRequest jsonget = new JsonObjectRequest(Request.Method.GET, Url, null,
+                new com.android.volley.Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            int sucses= response.getInt("success");
+                            hideDialog();
+                            if (sucses==1){
+                                String status = null;
+                                JSONArray JsonArray = response.getJSONArray("uploade");
+                                for (int i = 0; i < JsonArray.length(); i++) {
+                                    JSONObject object = JsonArray.getJSONObject(i);
+                                    Integer idSidang = object.getInt("i_id");
+                                    String judul = object.getString("t_judulsidang");
+                                    String nbiMhs = object.getString("c_nbi_mhs");
+                                    String nikDosBing = object.getString("c_dos_bing");
+                                    String nmDosBing = object.getString("namaDosBing");
+                                    String nikDosUji1 = object.getString("c_dosen_uji1");
+                                    String nmDosUji1 = object.getString("namaUji1");
+                                    String nikDosUji2 = object.getString("c_dosen_uji2");
+                                    String nmDosUji2 = object.getString("namaUji2");
+                                    String tglSidang = object.getString("dt_sidang_ta");
+                                    Integer noUrut = object.getInt("i_nourut");
+                                    String cdstatus = object.getString("c_dstatus");
+                                    String fileBayar = object.getString("vc_file_bayar");
+                                    String fileBimbingan = object.getString("vc_file_bimbingan");
+                                    if(cdstatus.substring(0,1).equals("*")){
+                                        status = "Judul belum divalidasi oleh Dosen pembimbing";
+                                    }else if(!cdstatus.substring(0,1).equals("*")){
+                                        if(cdstatus.substring(1,2).equals("*")){
+                                            status = "Judul sudah divalidasi oleh Dosen pembimbing. Lanjutkan upload pembayaran sidang!";
+                                        }else if(!cdstatus.substring(1,2).equals("*")){
+                                            if(cdstatus.substring(2,3).equals("*")){
+                                                status = "Pembayaran sudah divalidasi. Lanjutkan upload lembar bimbingan!";
+                                            }else if(!cdstatus.substring(2,3).equals("*")){
+                                                status = "Lembar bimbingan sudah divalidasi.";
+                                            }
+                                        }
+                                    }
+                                    if(menu.equals("INFO")){
+                                        setDataInfo(judul, status, nmDosBing+" ("+nikDosBing+")", nmDosUji1+" ("+nikDosUji1+")",
+                                                nmDosUji2+" ("+nikDosUji2+")", tglSidang.equals("0000-00-00")?null:tglSidang, String.valueOf(noUrut));
+                                        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                                        drawer.closeDrawer(GravityCompat.START);
+                                        AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this);
+                                        dialog.setView(promptsViewInfo);
+                                        dialog.setCancelable(false);
+                                        dialog.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                alert.dismiss();
+                                            }
+                                        });
+                                        alert = dialog.create();
+                                        alert.show();
+                                    }else if(menu.equals("BAYAR")){
+                                        if(cdstatus.substring(0,1).equals("*")){
+                                            Toast.makeText(MainActivity.this, "Judul Sidang anda belum divalidasi dosen pembimbing", Toast.LENGTH_SHORT).show();
+                                        }else{//LANJUT UPLOAD
+                                            Intent ii = new Intent(MainActivity.this, UploadPembayaran.class);
+                                            ii.putExtra("namaImage", fileBayar);
+                                            startActivity(ii);
+                                            overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                                        }
+                                    }else if(menu.equals("BIMBINGAN")){
+                                        if(cdstatus.substring(0,1).equals("*")){
+                                            Toast.makeText(MainActivity.this, "Judul Sidang anda belum divalidasi dosen pembimbing", Toast.LENGTH_SHORT).show();
+                                        }else{//LANJUT UPLOAD
+                                            Intent ii = new Intent(MainActivity.this, UploadBimbingan.class);
+                                            ii.putExtra("namaImage", fileBimbingan);
+                                            startActivity(ii);
+                                            overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                                        }
+                                    }
+                                }
+                            }else{
+                                hideDialog();
+                                //tvstatus.setText("Tidak Ada Data");
+                            }
+                        } catch (JSONException e) {
+                            hideDialog();
+                            e.printStackTrace();
+                        }
+                    }
+                }, new com.android.volley.Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                hideDialog();
+                if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+                    Toast.makeText(MainActivity.this, "Check Koneksi Internet Anda", Toast.LENGTH_LONG).show();
+                } else if (error instanceof AuthFailureError) {
+                    Toast.makeText(MainActivity.this, "AuthFailureError", Toast.LENGTH_LONG).show();
+                } else if (error instanceof ServerError) {
+                    Toast.makeText(MainActivity.this, "Check ServerError", Toast.LENGTH_LONG).show();
+                } else if (error instanceof NetworkError) {
+                    Toast.makeText(MainActivity.this, "Check NetworkError", Toast.LENGTH_LONG).show();
+                } else if (error instanceof ParseError) {
+                    Toast.makeText(MainActivity.this, "Check ParseError", Toast.LENGTH_LONG).show();
+                }
+            }
+        }){
+            @Override
+            protected java.util.Map<String, String> getParams() {
+                java.util.Map<String, String> params = new HashMap<String, String>();
+                params.put("userId", nbiMhs);
+                return params;
+            }
+            @Override
+            public java.util.Map<String, String> getHeaders() throws AuthFailureError {
+                java.util.Map<String,String> params = new HashMap<String, String>();
+                params.put("Content-Type","application/json");
+                return params;
+            }
+        };
+        AppController.getInstance().getRequestQueue().getCache().invalidate(Url, true);
+        AppController.getInstance().addToRequestQueue(jsonget);
     }
 
     private void simpanJudul(final String userId, final String namaJudul, final String nikDosen){
@@ -367,9 +548,11 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.pengumuman) {
             changeFragmentListUploadKriteria(new FrgPengumuman(), status, userId);
-        } else if (id == R.id.uploadBukti) {
-
-        } else if (id == R.id.logout) {
+        } /*else if (id == R.id.uploadBuktiPembayaran) {
+            getInfoSidang(Link.BASE_URL_API+getInfo, userId, "BAYAR");
+        } else if (id == R.id.uploadBuktiBimbingan) {
+            getInfoSidang(Link.BASE_URL_API+getInfo, userId, "BIMBINGAN");
+        }*/ else if (id == R.id.logout) {
             pref.clear();
             startActivity(new Intent(MainActivity.this, Login.class));
             overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
@@ -400,6 +583,36 @@ public class MainActivity extends AppCompatActivity
         extras.putString("userId", userId);
         targetFragment.setArguments(extras);
         drawer.closeDrawer(START);
+    }
+
+    private void checkAndRequestPermissions() {
+        int writeExtStorage = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        int readExtStorage = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
+        listPermissionsNeeded = new ArrayList<>();
+        if (writeExtStorage != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        }
+        if (readExtStorage != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+        }
+    }
+
+    private void openPermission(){
+        if (!listPermissionsNeeded.isEmpty()) {
+            mRequestPermissionHandler.requestPermission(this,
+                    listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]),
+                    123, new RequestPermissionHandler.RequestPermissionListener() {
+                        @Override
+                        public void onSuccess() {
+                            Toast.makeText(MainActivity.this, "Request permission success", Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onFailed() {
+                            Toast.makeText(MainActivity.this, "Request permission failed", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        }
     }
 
     @Override

@@ -63,6 +63,11 @@ public interface BaseApiService {
                                         @Field("userId") String userId,
                                         @Field("tglNow") String tglNow);
 
+    @Multipart
+    @POST("uploadPembayaran.php?apicall=upload")
+    Call<ResponseBody> uploadImageBayar(@Part("image\"; filename=\"myfile.jpg\" ") RequestBody file,
+                                       @Part("desc") RequestBody desc);
+
     /*@FormUrlEncoded
     @POST("saveTrans.php")
     Call<ResponseBody> savePemeriksaan(@Field("pasienId") String pasienId,

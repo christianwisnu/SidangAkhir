@@ -5,7 +5,8 @@ import service.BaseApiService;
 public class Link {
 
     public static final String BASE_URL_API = "http://softchrist.com/sidang_ta/php/";
-    public static final String BASE_URL_IMAGE = "http://softchrist.com/sidang_ta/image/";
+    public static final String BASE_URL_IMAGE_BAYAR = "http://softchrist.com/sidang_ta/image/pembayaran/";
+    public static final String BASE_URL_IMAGE_BIMBINGAN = "http://softchrist.com/sidang_ta/image/bimbingan/";
     public static final String BASE_URL_VIDEO = "http://softchrist.com/sidang_ta/video/";
 
     // Mendeklarasikan Interface BaseApiService
@@ -13,8 +14,12 @@ public class Link {
         return RetrofitClient.getClient(BASE_URL_API).create(BaseApiService.class);
     }
 
-    public static BaseApiService getImageService(){
-        return RetrofitClient.getClient(BASE_URL_IMAGE).create(BaseApiService.class);
+    public static BaseApiService getImageServiceBayar(){
+        return RetrofitClient.getClient(BASE_URL_IMAGE_BAYAR).create(BaseApiService.class);
+    }
+
+    public static BaseApiService getImageServiceBimbingan(){
+        return RetrofitClient.getClient(BASE_URL_IMAGE_BIMBINGAN).create(BaseApiService.class);
     }
 
     public static BaseApiService getVideoService(){
