@@ -276,8 +276,8 @@ public class MainActivity extends AppCompatActivity
         nav_Menu.findItem(R.id.jadwaldosen).setVisible(true);
         nav_Menu.findItem(R.id.jadwalsidang).setVisible(true);
         nav_Menu.findItem(R.id.pengumuman).setVisible(true);
-        //nav_Menu.findItem(R.id.uploadBuktiPembayaran).setVisible(true);
-        //nav_Menu.findItem(R.id.uploadBuktiBimbingan).setVisible(true);
+        nav_Menu.findItem(R.id.uploadBuktiPembayaran).setVisible(true);
+        nav_Menu.findItem(R.id.uploadBuktiBimbingan).setVisible(true);
         nav_Menu.findItem(R.id.logout).setVisible(true);
 
         nav_Menu.findItem(R.id.validasijudulsidang).setVisible(false);
@@ -292,8 +292,8 @@ public class MainActivity extends AppCompatActivity
         nav_Menu.findItem(R.id.jadwaldosen).setVisible(false);
         nav_Menu.findItem(R.id.jadwalsidang).setVisible(true);
         nav_Menu.findItem(R.id.pengumuman).setVisible(true);
-        //nav_Menu.findItem(R.id.uploadBuktiPembayaran).setVisible(false);
-        //nav_Menu.findItem(R.id.uploadBuktiBimbingan).setVisible(false);
+        nav_Menu.findItem(R.id.uploadBuktiPembayaran).setVisible(false);
+        nav_Menu.findItem(R.id.uploadBuktiBimbingan).setVisible(false);
         nav_Menu.findItem(R.id.logout).setVisible(true);
 
         nav_Menu.findItem(R.id.validasijudulsidang).setVisible(true);
@@ -308,8 +308,8 @@ public class MainActivity extends AppCompatActivity
         nav_Menu.findItem(R.id.jadwaldosen).setVisible(false);
         nav_Menu.findItem(R.id.jadwalsidang).setVisible(false);
         nav_Menu.findItem(R.id.pengumuman).setVisible(true);
-        //nav_Menu.findItem(R.id.uploadBuktiPembayaran).setVisible(false);
-        //nav_Menu.findItem(R.id.uploadBuktiBimbingan).setVisible(false);
+        nav_Menu.findItem(R.id.uploadBuktiPembayaran).setVisible(false);
+        nav_Menu.findItem(R.id.uploadBuktiBimbingan).setVisible(false);
         nav_Menu.findItem(R.id.logout).setVisible(true);
 
         nav_Menu.findItem(R.id.validasijudulsidang).setVisible(false);
@@ -548,11 +548,11 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.pengumuman) {
             changeFragmentListUploadKriteria(new FrgPengumuman(), status, userId);
-        } /*else if (id == R.id.uploadBuktiPembayaran) {
+        } else if (id == R.id.uploadBuktiPembayaran) {
             getInfoSidang(Link.BASE_URL_API+getInfo, userId, "BAYAR");
         } else if (id == R.id.uploadBuktiBimbingan) {
             getInfoSidang(Link.BASE_URL_API+getInfo, userId, "BIMBINGAN");
-        }*/ else if (id == R.id.logout) {
+        } else if (id == R.id.logout) {
             pref.clear();
             startActivity(new Intent(MainActivity.this, Login.class));
             overridePendingTransition(R.anim.fade_in, R.anim.fade_out);

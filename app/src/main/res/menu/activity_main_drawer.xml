@@ -19,7 +19,15 @@
             android:icon="@mipmap/ic_action_volume_up_black"
             android:title="Pengumuman" />
 
+        <item
+            android:id="@+id/uploadBuktiPembayaran"
+            android:icon="@mipmap/ic_receipt_black_24dp"
+            android:title="Upload bukti Pembayaran" />
 
+        <item
+            android:id="@+id/uploadBuktiBimbingan"
+            android:icon="@mipmap/ic_description_black_24dp"
+            android:title="Upload bukti Bimbingan" />
 
         <item
             android:id="@+id/validasijudulsidang"
