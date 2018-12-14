@@ -57,7 +57,9 @@ import java.util.HashMap;
 import java.util.List;
 
 import list.FrgPengumuman;
+import list.FrgValidasiBimbingan;
 import list.FrgValidasiJudul;
+import list.FrgValidasiPembayaran;
 import list.ListDosenPembimbing;
 import model.master.ColPengumuman;
 import okhttp3.ResponseBody;
@@ -564,9 +566,9 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.inputdosensidang) {
 
         } else if (id == R.id.validasibimbingan) {
-
+            changeFragmentListUploadKriteria(new FrgValidasiBimbingan(), status, userId);
         } else if (id == R.id.validasipembayaran) {
-
+            changeFragmentListUploadKriteria(new FrgValidasiPembayaran(), status, userId);
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

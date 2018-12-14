@@ -7,6 +7,10 @@ public class ColSidang {
     private String nbiMhs;
     private String namaMhs;
     private String cdstatus;
+    private String nikDosBing;
+    private String namaDosBing;
+    private String fileBayar;
+    private String fileBimbingan;
 
     public Integer getId() {
         return id;
@@ -46,5 +50,37 @@ public class ColSidang {
 
     public void setCdstatus(String cdstatus) {
         this.cdstatus = cdstatus;
+    }
+
+    public String getNikDosBing() {
+        return nikDosBing;
+    }
+
+    public void setNikDosBing(String nikDosBing) {
+        this.nikDosBing = nikDosBing;
+    }
+
+    public String getNamaDosBing() {
+        return namaDosBing;
+    }
+
+    public void setNamaDosBing(String namaDosBing) {
+        this.namaDosBing = namaDosBing;
+    }
+
+    public String getFileBayar() {
+        return fileBayar;
+    }
+
+    public void setFileBayar(String fileBayar) {
+        this.fileBayar = fileBayar;
+    }
+
+    public String getFileBimbingan() {
+        return fileBimbingan;
+    }
+
+    public void setFileBimbingan(String fileBimbingan) {
+        this.fileBimbingan = fileBimbingan;
     }
 }
