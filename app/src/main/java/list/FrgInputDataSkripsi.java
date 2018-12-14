@@ -1,13 +1,10 @@
 package list;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -28,74 +25,47 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
-import adapter.AdpValidasiBimbingan;
+import adapter.AdpInputDataSkripsi;
 import model.master.ColSidang;
 import utilities.AppController;
 import utilities.Link;
-import utilities.Utils;
 
-public class FrgValidasiBimbingan extends android.support.v4.app.Fragment  {
+public class FrgInputDataSkripsi extends Fragment {
 
     private View vupload;
-    private AdpValidasiBimbingan adapter;
+    private AdpInputDataSkripsi adapter;
     private ListView lsvupload;
     private ArrayList<ColSidang> columnlist= new ArrayList<ColSidang>();
     private TextView tvstatus;
     private ProgressBar prbstatus;
-    private String getUpload	="getListBlmValidasiBimbingan.php";
-    private String idAdmin, status;
-    private AlertDialog alert;
-    private View promptsViewInfo;
-    private LayoutInflater liInfo;
-    private ImageView imgGbr;
+    private String getUpload	="getInputDataSkripsi.php";
+    private String status, userAdmin;
+    private DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private Date tglNowLast, tglFrom;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Bundle bundle	 = this.getArguments();
         if (bundle!=null){
             status	= bundle.getString("status");
-            idAdmin	= bundle.getString("userId");
+            userAdmin = bundle.getString("userId");
         }
-        vupload     = inflater.inflate(R.layout.list_validasi_bimbingan,container,false);
-        lsvupload	= (ListView)vupload.findViewById(R.id.listValidasiBimbingan);
-        tvstatus	= (TextView)vupload.findViewById(R.id.txtListValidasiBimbinganStatus);
-        prbstatus	= (ProgressBar)vupload.findViewById(R.id.prbListValidasiBimbinganStatus);
+        vupload     = inflater.inflate(R.layout.list_input_data_skripsi,container,false);
+        lsvupload	= (ListView)vupload.findViewById(R.id.listDataSkripsi);
+        tvstatus	= (TextView)vupload.findViewById(R.id.txtListDataSkripsiStatus);
+        prbstatus	= (ProgressBar)vupload.findViewById(R.id.prbListDataSkripsiStatus);
 
-        adapter		= new AdpValidasiBimbingan(getActivity(), R.layout.col_validasi_bimbingan, columnlist, idAdmin);
+        adapter		= new AdpInputDataSkripsi(getActivity(), R.layout.col_input_data_skripsi, columnlist, userAdmin);
         lsvupload.setAdapter(adapter);
         getDataUpload(Link.BASE_URL_API+getUpload);
 
-        lsvupload.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                liInfo = LayoutInflater.from(getContext());
-                promptsViewInfo = liInfo.inflate(R.layout.view_gbr_bimbingan, null);
-                imgGbr = (ImageView) promptsViewInfo.findViewById(R.id.imgViewBimbingan);
-                setDataInfo(columnlist.get(position).getFileBimbingan());
-
-                AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
-                dialog.setTitle("Gambar Bimbingan");
-                dialog.setView(promptsViewInfo);
-                dialog.setCancelable(false);
-                dialog.setNeutralButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-                AlertDialog ad = dialog.create();
-                ad.show();
-            }
-        });
         return vupload;
-    }
-
-    private void setDataInfo(String fileGbr){
-        imgGbr.setBackgroundResource(0);
-        Utils.getCycleImage(Link.BASE_URL_IMAGE_BIMBINGAN+fileGbr, imgGbr, getContext());
     }
 
     private void getDataUpload(String Url){
@@ -184,7 +154,8 @@ public class FrgValidasiBimbingan extends android.support.v4.app.Fragment  {
     @Override
     public void onResume() {
         super.onResume();
-        adapter		= new AdpValidasiBimbingan(getActivity(), R.layout.col_validasi_bimbingan, columnlist, idAdmin);
+        columnlist= new ArrayList<ColSidang>();
+        adapter		= new AdpInputDataSkripsi(getActivity(), R.layout.col_input_data_skripsi, columnlist, userAdmin);
         lsvupload.setAdapter(adapter);
         getDataUpload(Link.BASE_URL_API+getUpload);
     }

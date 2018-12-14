@@ -1,9 +1,13 @@
 package list;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -18,6 +22,7 @@ import com.android.volley.error.ServerError;
 import com.android.volley.error.TimeoutError;
 import com.android.volley.error.VolleyError;
 import com.android.volley.request.JsonObjectRequest;
+import com.example.project.sidangakhir.MainActivity;
 import com.example.project.sidangakhir.R;
 
 import org.json.JSONArray;
@@ -31,6 +36,7 @@ import adapter.AdpValidasiPembayaran;
 import model.master.ColSidang;
 import utilities.AppController;
 import utilities.Link;
+import utilities.Utils;
 
 public class FrgValidasiPembayaran extends android.support.v4.app.Fragment  {
 
@@ -42,6 +48,10 @@ public class FrgValidasiPembayaran extends android.support.v4.app.Fragment  {
     private ProgressBar prbstatus;
     private String getUpload	="getListBlmValidasiBayar.php";
     private String idAdmin, status;
+    private AlertDialog alert;
+    private View promptsViewInfo;
+    private LayoutInflater liInfo;
+    private ImageView imgGbr;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -58,7 +68,36 @@ public class FrgValidasiPembayaran extends android.support.v4.app.Fragment  {
         adapter		= new AdpValidasiPembayaran(getActivity(), R.layout.col_validasi_pembayaran, columnlist, idAdmin);
         lsvupload.setAdapter(adapter);
         getDataUpload(Link.BASE_URL_API+getUpload);
+
+        lsvupload.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                liInfo = LayoutInflater.from(getContext());
+                promptsViewInfo = liInfo.inflate(R.layout.view_gbr_pembayaran, null);
+                imgGbr = (ImageView) promptsViewInfo.findViewById(R.id.imgViewPembayaran);
+                setDataInfo(columnlist.get(position).getFileBayar());
+
+                AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
+                dialog.setTitle("Gambar Pembayaran");
+                dialog.setView(promptsViewInfo);
+                dialog.setCancelable(false);
+                dialog.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                AlertDialog ad = dialog.create();
+                ad.show();
+            }
+        });
+
         return vupload;
+    }
+
+    private void setDataInfo(String fileGbr){
+        imgGbr.setBackgroundResource(0);
+        Utils.getCycleImage(Link.BASE_URL_IMAGE_BAYAR+fileGbr, imgGbr, getContext());
     }
 
     private void getDataUpload(String Url){

@@ -36,7 +36,7 @@ public class ListDosenPembimbing extends AppCompatActivity{
     private AdpListDosBing mAdapter;
     private ProgressDialog progress;
     private BaseApiService mApiService;
-    private String kodeUser;
+    private String kodeUser, status;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,10 +44,12 @@ public class ListDosenPembimbing extends AppCompatActivity{
         setContentView(R.layout.list_dosenpembimbing);
         Intent i = getIntent();
         kodeUser = (String) i.getStringExtra("userid");
+        status = (String) i.getStringExtra("status");
         mApiService         = Link.getAPIService();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarDosbing);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Daftar Dosen Pembimbing");
+        String a = status.equals("DOSBING")?"Pembimbing":status.equals("UJI1")?"Penguji 1":"Penguji 2";
+        getSupportActionBar().setTitle("Daftar Dosen "+ a);
         progress = new ProgressDialog(this);
         progress.setCancelable(false);
         progress.setMessage("Loading ...");

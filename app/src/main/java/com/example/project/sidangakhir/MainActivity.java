@@ -56,6 +56,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import list.FrgInputDataSkripsi;
 import list.FrgPengumuman;
 import list.FrgValidasiBimbingan;
 import list.FrgValidasiJudul;
@@ -227,7 +228,8 @@ public class MainActivity extends AppCompatActivity
 
     private void pilihDosBing(){
         Intent i = new Intent(MainActivity.this, ListDosenPembimbing.class);
-        i.putExtra("userid", '1');
+        i.putExtra("userid", "1");
+        i.putExtra("status", "DOSBING");
         startActivityForResult(i,RESULT_DOSBING);
     }
 
@@ -564,7 +566,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.validasijudulsidang) {
             changeFragmentListUploadKriteria(new FrgValidasiJudul(), status, userId);
         } else if (id == R.id.inputdosensidang) {
-
+            changeFragmentListUploadKriteria(new FrgInputDataSkripsi(), status, userId);
         } else if (id == R.id.validasibimbingan) {
             changeFragmentListUploadKriteria(new FrgValidasiBimbingan(), status, userId);
         } else if (id == R.id.validasipembayaran) {

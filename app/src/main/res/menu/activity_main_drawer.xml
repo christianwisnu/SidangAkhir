@@ -37,7 +37,7 @@
         <item
             android:id="@+id/inputdosensidang"
             android:icon="@mipmap/ic_account_circle_black_24dp"
-            android:title="Input Dosen Uji" />
+            android:title="Input Data Skripsi" />
 
         <item
             android:id="@+id/validasibimbingan"

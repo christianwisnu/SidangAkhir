@@ -1,7 +1,9 @@
 package com.example.project.sidangakhir;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -120,7 +122,22 @@ public class UploadBimbingan extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(!hasilFoto.equals("N")){
-                    uploadImage();
+                    AlertDialog.Builder builder = new AlertDialog.Builder(UploadBimbingan.this);
+                    builder.setTitle("Konfirmasi");
+                    builder.setMessage("Data akan diproses?")
+                            .setCancelable(false)
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    uploadImage();
+                                }
+                            })
+                            .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+                    AlertDialog alertDialog = builder.create();
+                    alertDialog.show();
                 }
             }
         });
@@ -140,8 +157,6 @@ public class UploadBimbingan extends AppCompatActivity {
                         JSONObject jsonRESULTS = new JSONObject(response.body().string());
                         hideDialog();
                         if (jsonRESULTS.getString("value").equals("false")){
-                            //Toast.makeText(UploadBimbingan.this, jsonRESULTS.getString("message"), Toast.LENGTH_LONG).show();
-                            //finish();
                             updateData(userId, hasilImage);
                         }else{
                             Toast.makeText(UploadBimbingan.this, jsonRESULTS.getString("message"), Toast.LENGTH_LONG).show();
