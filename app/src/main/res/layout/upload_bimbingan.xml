@@ -64,6 +64,18 @@
                 android:textColor="@color/md_white"
                 android:textSize="20dp" />
 
+            <TextView
+                android:visibility="gone"
+                android:gravity="center"
+                android:id="@+id/txtMessageBimbingan"
+                android:layout_marginLeft="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:textColor="@color/md_red_a700"
+                android:textStyle="bold"
+                android:textSize="17dp"/>
+
         </LinearLayout>
 
     </ScrollView>

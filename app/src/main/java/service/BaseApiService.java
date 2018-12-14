@@ -68,6 +68,23 @@ public interface BaseApiService {
     Call<ResponseBody> uploadImageBayar(@Part("image\"; filename=\"myfile.jpg\" ") RequestBody file,
                                        @Part("desc") RequestBody desc);
 
+    @Multipart
+    @POST("uploadBimbingan.php?apicall=upload")
+    Call<ResponseBody> uploadImageBimbingan(@Part("image\"; filename=\"myfile.jpg\" ") RequestBody file,
+                                        @Part("desc") RequestBody desc);
+
+    @FormUrlEncoded
+    @POST("updateGbrPembayaran.php")
+    Call<ResponseBody> updateUploadBayar(@Field("userId") String idMhs,
+                                    @Field("fileName") String nama,
+                                    @Field("tglNow") String tglNow);
+
+    @FormUrlEncoded
+    @POST("updateGbrBimbingan.php")
+    Call<ResponseBody> updateUploadBimbingan(@Field("userId") String idMhs,
+                                         @Field("fileName") String nama,
+                                         @Field("tglNow") String tglNow);
+
     /*@FormUrlEncoded
     @POST("saveTrans.php")
     Call<ResponseBody> savePemeriksaan(@Field("pasienId") String pasienId,

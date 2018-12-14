@@ -2,6 +2,7 @@ package adapter;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.view.LayoutInflater;
@@ -43,6 +44,7 @@ import utilities.Link;
 public class AdpValidasiJudul extends ArrayAdapter<ColSidang> {
 
     private List<ColSidang> columnslist;
+    private ProgressDialog pDialog;
     private LayoutInflater vi;
     private int Resource;
     private int lastPosition = -1;
@@ -68,6 +70,8 @@ public class AdpValidasiJudul extends ArrayAdapter<ColSidang> {
     @Override
     public View getView (final int position, View convertView, final ViewGroup parent){
         View v	=	convertView;
+        pDialog = new ProgressDialog(getContext());
+        pDialog.setCancelable(false);
         if (v == null){
             holder	=	new ViewHolder();
             v= vi.inflate(Resource, null);
@@ -114,6 +118,8 @@ public class AdpValidasiJudul extends ArrayAdapter<ColSidang> {
     }
 
     private void validasiData(String save, final int position, final String idSidang, final String userDosen){
+        pDialog.setMessage("Proses Validasi ...\nHarap Tunggu");
+        showDialog();
         Date today = Calendar.getInstance().getTime();
         final String tanggalNow =dfSave.format(today);
         StringRequest register = new StringRequest(Request.Method.POST, save,
@@ -128,11 +134,14 @@ public class AdpValidasiJudul extends ArrayAdapter<ColSidang> {
                                 columnslist.remove(position);
                                 notifyDataSetChanged();
                                 Toast.makeText(getContext(), "DATA BERHASIL DI VALIDASI", Toast.LENGTH_LONG).show();
+                                hideDialog();
                             }else{
                                 Toast.makeText(getContext(), "VALIDASI GAGAL", Toast.LENGTH_LONG).show();
+                                hideDialog();
                             }
                         } catch (Exception e) {
                             Toast.makeText(getContext(), "VALIDASI GAGAL.", Toast.LENGTH_LONG).show();
+                            hideDialog();
                         }
                     }
                 }, new Response.ErrorListener() {
@@ -150,6 +159,7 @@ public class AdpValidasiJudul extends ArrayAdapter<ColSidang> {
                 } else if (error instanceof ParseError) {
                     Toast.makeText(getContext(), "VALIDASI GAGAL.\nCheck ParseError", Toast.LENGTH_LONG).show();
                 }
+                hideDialog();
             }
         }){
             @Override
@@ -176,5 +186,15 @@ public class AdpValidasiJudul extends ArrayAdapter<ColSidang> {
         private TextView TvNBI;
         private TextView TvNamaMhs;
         private TextView TvID;
+    }
+
+    private void showDialog() {
+        if (!pDialog.isShowing())
+            pDialog.show();
+    }
+
+    private void hideDialog() {
+        if (pDialog.isShowing())
+            pDialog.dismiss();
     }
 }

@@ -16,9 +16,26 @@ import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import service.BaseApiService;
 import utilities.Link;
 import utilities.PrefUtil;
@@ -28,7 +45,7 @@ public class UploadBimbingan extends AppCompatActivity {
 
     private ImageView imgBack, imgFoto;
     private Button btnProses;
-    private String path, namaImage, hasilImage, hasilFoto="N", userId, encodedString;
+    private String path, namaImage, hasilImage, hasilFoto="N", userId, encodedString, cdstatus;
     private String[] items = {"Camera", "Gallery"};
     private static final int REQUEST_CODE_CAMERA = 0012;
     private static final int REQUEST_CODE_GALLERY = 0013;
@@ -37,6 +54,8 @@ public class UploadBimbingan extends AppCompatActivity {
     private Uri selectedImage;
     private ProgressDialog pDialog;
     private BaseApiService mApiService, mUploadService;
+    private DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private TextView txtMessage;
 
     @Override
     protected void onCreate( Bundle savedInstanceState) {
@@ -46,11 +65,12 @@ public class UploadBimbingan extends AppCompatActivity {
         pDialog = new ProgressDialog(this);
         pDialog.setCancelable(false);
         mApiService = Link.getAPIService();
-        mUploadService = Link.getImageServiceBayar();
+        mUploadService = Link.getImageServiceBimbingan();
         Bundle i = getIntent().getExtras();
         if (i != null){
             try {
                 namaImage = i.getString("namaImage");
+                cdstatus = i.getString("cdstatus");
             } catch (Exception e) {}
         }
 
@@ -61,7 +81,26 @@ public class UploadBimbingan extends AppCompatActivity {
         }catch (Exception e){e.getMessage();}
         imgBack = (ImageView)findViewById(R.id.imgUploadBimbinganBack);
         imgFoto = (ImageView)findViewById(R.id.imgBuktiBimbingan);
+        txtMessage = (TextView) findViewById(R.id.txtMessageBimbingan);
         btnProses = (Button) findViewById(R.id.btnUploadBimbingan);
+
+        if(!namaImage.equals("-")){
+            imgFoto.setBackgroundResource(0);
+            Utils.getCycleImage(Link.BASE_URL_IMAGE_BIMBINGAN+namaImage, imgFoto, this);
+            if(!cdstatus.substring(2,3).equals("*")){
+                btnProses.setVisibility(View.GONE);
+                txtMessage.setVisibility(View.VISIBLE);
+                txtMessage.setText("Bukti Lembar Bimbingan sudah divalidasi");
+            }else{
+                btnProses.setVisibility(View.VISIBLE);
+                txtMessage.setVisibility(View.GONE);
+                txtMessage.setText("");
+            }
+        }else{
+            btnProses.setVisibility(View.VISIBLE);
+            txtMessage.setVisibility(View.GONE);
+            txtMessage.setText("");
+        }
 
         imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,9 +119,92 @@ public class UploadBimbingan extends AppCompatActivity {
         btnProses.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if(!hasilFoto.equals("N")){
+                    uploadImage();
+                }
             }
         });
+    }
+
+    private void uploadImage() {
+        pDialog.setMessage("Uploading Image Bimbingan ke Server...");
+        showDialog();
+        File file = new File(getRealPathFromURI(selectedImage));
+        RequestBody requestFile = RequestBody.create(MediaType.parse(getContentResolver().getType(selectedImage)), file);
+        RequestBody descBody = RequestBody.create(MediaType.parse("text/plain"), hasilImage);
+        mUploadService.uploadImageBimbingan(requestFile, descBody).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()){
+                    try {
+                        JSONObject jsonRESULTS = new JSONObject(response.body().string());
+                        hideDialog();
+                        if (jsonRESULTS.getString("value").equals("false")){
+                            //Toast.makeText(UploadBimbingan.this, jsonRESULTS.getString("message"), Toast.LENGTH_LONG).show();
+                            //finish();
+                            updateData(userId, hasilImage);
+                        }else{
+                            Toast.makeText(UploadBimbingan.this, jsonRESULTS.getString("message"), Toast.LENGTH_LONG).show();
+                        }
+                    }catch (JSONException e) {
+                        hideDialog();
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        hideDialog();
+                        e.printStackTrace();
+                    }
+                }else{
+                    hideDialog();
+                    Toast.makeText(UploadBimbingan.this, "Some error occurred...", Toast.LENGTH_LONG).show();
+                }
+            }
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                hideDialog();
+                Toast.makeText(UploadBimbingan.this, t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void updateData(String idMhs, String fileNameGbr){
+        pDialog.setMessage("Update Database ...\nHarap Tunggu");
+        showDialog();
+        Date today = Calendar.getInstance().getTime();
+        String tanggalNow =df.format(today);
+        mApiService.updateUploadBimbingan(idMhs, fileNameGbr, tanggalNow)
+                .enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        if (response.isSuccessful()){
+                            try {
+                                JSONObject jsonRESULTS = new JSONObject(response.body().string());
+                                if (jsonRESULTS.getString("value").equals("false")){
+                                    Toast.makeText(UploadBimbingan.this, jsonRESULTS.getString("message"), Toast.LENGTH_SHORT).show();
+                                    finish();
+                                } else {
+                                    hideDialog();
+                                    String error_message = jsonRESULTS.getString("message");
+                                    Toast.makeText(UploadBimbingan.this, error_message, Toast.LENGTH_LONG).show();
+                                }
+                            } catch (JSONException e) {
+                                hideDialog();
+                                e.printStackTrace();
+                            } catch (IOException e) {
+                                hideDialog();
+                                e.printStackTrace();
+                            }
+                        } else {
+                            hideDialog();
+                            Toast.makeText(UploadBimbingan.this, "GAGAL UPDATE DATA", Toast.LENGTH_LONG).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        hideDialog();
+                        Toast.makeText(UploadBimbingan.this, "Koneksi Internet Bermasalah", Toast.LENGTH_LONG).show();
+                    }
+                });
     }
 
     private void openImage() {
@@ -134,7 +256,7 @@ public class UploadBimbingan extends AppCompatActivity {
         if (requestCode == REQUEST_CODE_GALLERY && resultCode == Activity.RESULT_OK) {
             try {
                 hasilFoto = "Y";
-                hasilImage = userId + "_PEMBAYARAN.jpg";
+                hasilImage = userId + "_BIMBINGAN.jpg";
                 selectedImage = data.getData();
                 String[] filePathColumn = { MediaStore.Images.Media.DATA };
                 Cursor cursor = this.getContentResolver().query(selectedImage, filePathColumn, null, null, null);

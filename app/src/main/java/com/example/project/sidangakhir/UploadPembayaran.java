@@ -1,18 +1,14 @@
 package com.example.project.sidangakhir;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.content.CursorLoader;
 import android.support.v7.app.AppCompatActivity;
@@ -20,15 +16,19 @@ import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -45,7 +45,7 @@ public class UploadPembayaran extends AppCompatActivity {
 
     private ImageView imgBack, imgFoto;
     private Button btnProses;
-    private String path, namaImage, hasilImage, hasilFoto="N", userId, encodedString;
+    private String path, namaImage, hasilImage, hasilFoto="N", userId, encodedString, cdstatus;
     private String[] items = {"Camera", "Gallery"};
     private static final int REQUEST_CODE_CAMERA = 0012;
     private static final int REQUEST_CODE_GALLERY = 0013;
@@ -54,6 +54,8 @@ public class UploadPembayaran extends AppCompatActivity {
     private Uri selectedImage;
     private ProgressDialog pDialog;
     private BaseApiService mApiService, mUploadService;
+    private DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private TextView txtMessage;
 
     @Override
     protected void onCreate( Bundle savedInstanceState) {
@@ -68,6 +70,7 @@ public class UploadPembayaran extends AppCompatActivity {
         if (i != null){
             try {
                 namaImage = i.getString("namaImage");
+                cdstatus = i.getString("cdstatus");
             } catch (Exception e) {}
         }
         try{
@@ -77,7 +80,26 @@ public class UploadPembayaran extends AppCompatActivity {
         }catch (Exception e){e.getMessage();}
         imgBack = (ImageView)findViewById(R.id.imgUploadBayarBack);
         imgFoto = (ImageView)findViewById(R.id.imgBuktiBayar);
+        txtMessage = (TextView) findViewById(R.id.txtMessageBayar);
         btnProses = (Button) findViewById(R.id.btnUploadBayar);
+
+        if(!namaImage.equals("-")){
+            imgFoto.setBackgroundResource(0);
+            Utils.getCycleImage(Link.BASE_URL_IMAGE_BAYAR+namaImage, imgFoto, this);
+            if(!cdstatus.substring(1,2).equals("*")){
+                btnProses.setVisibility(View.GONE);
+                txtMessage.setVisibility(View.VISIBLE);
+                txtMessage.setText("Bukti Pembayaran sudah divalidasi");
+            }else{
+                btnProses.setVisibility(View.VISIBLE);
+                txtMessage.setVisibility(View.GONE);
+                txtMessage.setText("");
+            }
+        }else{
+            btnProses.setVisibility(View.VISIBLE);
+            txtMessage.setVisibility(View.GONE);
+            txtMessage.setText("");
+        }
 
         imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,8 +118,9 @@ public class UploadPembayaran extends AppCompatActivity {
         btnProses.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //hasilImage
-
+                if(!hasilFoto.equals("N")){
+                    uploadImage();
+                }
             }
         });
     }
@@ -112,14 +135,26 @@ public class UploadPembayaran extends AppCompatActivity {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()){
-                    MyTask task = new MyTask();
-                    task.execute(Link.BASE_URL_IMAGE_BAYAR+hasilImage);
+                    try {
+                        JSONObject jsonRESULTS = new JSONObject(response.body().string());
+                        hideDialog();
+                        if (jsonRESULTS.getString("value").equals("false")){
+                            updateData(userId, hasilImage);
+                        }else{
+                            Toast.makeText(UploadPembayaran.this, jsonRESULTS.getString("message"), Toast.LENGTH_LONG).show();
+                        }
+                    }catch (JSONException e) {
+                        hideDialog();
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        hideDialog();
+                        e.printStackTrace();
+                    }
                 }else{
                     hideDialog();
                     Toast.makeText(UploadPembayaran.this, "Some error occurred...", Toast.LENGTH_LONG).show();
                 }
             }
-
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 hideDialog();
@@ -128,47 +163,45 @@ public class UploadPembayaran extends AppCompatActivity {
         });
     }
 
-    private class MyTask extends AsyncTask<String, Void, Boolean> {
+    private void updateData(String idMhs, String fileNameGbr){
+        pDialog.setMessage("Update Database ...\nHarap Tunggu");
+        showDialog();
+        Date today = Calendar.getInstance().getTime();
+        String tanggalNow =df.format(today);
+        mApiService.updateUploadBayar(idMhs, fileNameGbr, tanggalNow)
+                .enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        if (response.isSuccessful()){
+                            try {
+                                JSONObject jsonRESULTS = new JSONObject(response.body().string());
+                                if (jsonRESULTS.getString("value").equals("false")){
+                                    Toast.makeText(UploadPembayaran.this, jsonRESULTS.getString("message"), Toast.LENGTH_SHORT).show();
+                                    finish();
+                                } else {
+                                    hideDialog();
+                                    String error_message = jsonRESULTS.getString("message");
+                                    Toast.makeText(UploadPembayaran.this, error_message, Toast.LENGTH_LONG).show();
+                                }
+                            } catch (JSONException e) {
+                                hideDialog();
+                                e.printStackTrace();
+                            } catch (IOException e) {
+                                hideDialog();
+                                e.printStackTrace();
+                            }
+                        } else {
+                            hideDialog();
+                            Toast.makeText(UploadPembayaran.this, "GAGAL UPDATE DATA", Toast.LENGTH_LONG).show();
+                        }
+                    }
 
-        @Override
-        protected void onPreExecute() {
-
-        }
-
-        @Override
-        protected Boolean doInBackground(String... params) {
-            try {
-                HttpURLConnection.setFollowRedirects(false);
-                HttpURLConnection con =  (HttpURLConnection) new URL(params[0]).openConnection();
-                con.setRequestMethod("HEAD");
-                System.out.println(con.getResponseCode());
-                return (con.getResponseCode() == HttpURLConnection.HTTP_OK);
-            }
-            catch (Exception e) {
-                e.printStackTrace();
-                return false;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(Boolean result) {
-            boolean bResponse = result;
-            if (bResponse==true){
-                Toast.makeText(UploadPembayaran.this, "DATA BERHASIL DISIMPAN", Toast.LENGTH_LONG).show();
-                /*if(tipe.equals("ADD")){
-                    Toast.makeText(UploadPembayaran.this, "DATA BERHASIL DISIMPAN", Toast.LENGTH_LONG).show();
-                }else{
-                    Toast.makeText(UploadPembayaran.this, "DATA BERHASIL DIUPDATE", Toast.LENGTH_LONG).show();
-                }*/
-                hideDialog();
-                Intent returnIntent = new Intent();
-                setResult(RESULT_OK, returnIntent);
-                finish();
-            }else{
-                Toast.makeText(UploadPembayaran.this, "File Uploaded Failed!", Toast.LENGTH_SHORT).show();
-                hideDialog();
-            }
-        }
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        hideDialog();
+                        Toast.makeText(UploadPembayaran.this, "Koneksi Internet Bermasalah", Toast.LENGTH_LONG).show();
+                    }
+                });
     }
 
     private void openImage() {

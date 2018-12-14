@@ -72,6 +72,23 @@ public class Utils {
         return tempCalendar.getTime();
     }
 
+    public static void GetImage(String url,ImageView img,Context context){
+        DisplayImageOptions options;
+        options = new DisplayImageOptions.Builder()
+                .showImageOnLoading(R.mipmap.ic_launcher)
+                .showImageForEmptyUri(R.mipmap.ic_launcher)
+                .showImageOnFail(R.mipmap.ic_launcher)
+                .cacheInMemory(true)
+                .cacheOnDisk(true)
+                .considerExifParams(true)
+                .bitmapConfig(Bitmap.Config.RGB_565)
+                .imageScaleType(ImageScaleType.EXACTLY_STRETCHED)
+                .build();
+        imgloader.init(ImageLoaderConfiguration.createDefault(context));
+        imgloader.displayImage(url, img, options);
+        return;
+    }
+
     public static void getCycleImage(String url, ImageView img, Context context){
         DisplayImageOptions options;
         options = new DisplayImageOptions.Builder()

@@ -403,6 +403,7 @@ public class MainActivity extends AppCompatActivity
                                         }else{//LANJUT UPLOAD
                                             Intent ii = new Intent(MainActivity.this, UploadPembayaran.class);
                                             ii.putExtra("namaImage", fileBayar);
+                                            ii.putExtra("cdstatus", cdstatus);
                                             startActivity(ii);
                                             overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                                         }
@@ -412,6 +413,7 @@ public class MainActivity extends AppCompatActivity
                                         }else{//LANJUT UPLOAD
                                             Intent ii = new Intent(MainActivity.this, UploadBimbingan.class);
                                             ii.putExtra("namaImage", fileBimbingan);
+                                            ii.putExtra("cdstatus", cdstatus);
                                             startActivity(ii);
                                             overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                                         }
