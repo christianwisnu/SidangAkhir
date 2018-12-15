@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/cardstore"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txtColJadwalSidangJudul"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="JUDUL"
+                android:textSize="17dp"
+                android:textColor="@color/md_black" />
+
+            <TextView
+                android:layout_marginTop="3dp"
+                android:layout_marginBottom="3dp"
+                android:id="@+id/txtColJadwalSidangNBIdanNama"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="NBI dan Nama"
+                android:textSize="15dp"
+                android:textColor="@color/md_black" />
+
+            <TextView
+                android:id="@+id/txtColJadwalSidangNamaDosBing"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nama Dosbing"
+                android:textSize="15dp"
+                android:textColor="@color/md_black" />
+
+            <TextView
+                android:layout_marginTop="3dp"
+                android:layout_marginBottom="3dp"
+                android:id="@+id/txtColJadwalSidangNamaDosUji1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nama Penguji 1"
+                android:textSize="15dp"
+                android:textColor="@color/md_black" />
+
+            <TextView
+                android:id="@+id/txtColJadwalSidangNamaDosUji2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nama Penguji 2"
+                android:textSize="15dp"
+                android:textColor="@color/md_black" />
+
+            <TextView
+                android:layout_marginTop="3dp"
+                android:layout_marginBottom="3dp"
+                android:id="@+id/txtColJadwalSidangTglSidang"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tanggal Sidang"
+                android:textSize="15dp"
+                android:textColor="@color/md_black" />
+
+            <TextView
+                android:layout_marginBottom="3dp"
+                android:id="@+id/txtColJadwalSidangNoUrut"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No Urut"
+                android:textSize="15dp"
+                android:textColor="@color/md_black" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

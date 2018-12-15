@@ -57,6 +57,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import list.FrgInputDataSkripsi;
+import list.FrgJadwalSidang;
 import list.FrgPengumuman;
 import list.FrgValidasiBimbingan;
 import list.FrgValidasiJudul;
@@ -549,7 +550,7 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.jadwalsidang) {
-
+            changeFragmentListUploadKriteria(new FrgJadwalSidang(), status, userId);
         } else if (id == R.id.jadwaldosen) {
 
         } else if (id == R.id.pengumuman) {
