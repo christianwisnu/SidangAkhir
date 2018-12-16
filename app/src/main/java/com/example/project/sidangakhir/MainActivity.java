@@ -57,6 +57,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import list.FrgInputDataSkripsi;
+import list.FrgJadwalDosen;
 import list.FrgJadwalSidang;
 import list.FrgPengumuman;
 import list.FrgValidasiBimbingan;
@@ -294,7 +295,7 @@ public class MainActivity extends AppCompatActivity
     private void menuDosen(){
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         Menu nav_Menu = navigationView.getMenu();
-        nav_Menu.findItem(R.id.jadwaldosen).setVisible(false);
+        nav_Menu.findItem(R.id.jadwaldosen).setVisible(true);
         nav_Menu.findItem(R.id.jadwalsidang).setVisible(true);
         nav_Menu.findItem(R.id.pengumuman).setVisible(true);
         nav_Menu.findItem(R.id.uploadBuktiPembayaran).setVisible(false);
@@ -310,7 +311,7 @@ public class MainActivity extends AppCompatActivity
     private void menuAdmin(){
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         Menu nav_Menu = navigationView.getMenu();
-        nav_Menu.findItem(R.id.jadwaldosen).setVisible(false);
+        nav_Menu.findItem(R.id.jadwaldosen).setVisible(true);
         nav_Menu.findItem(R.id.jadwalsidang).setVisible(false);
         nav_Menu.findItem(R.id.pengumuman).setVisible(true);
         nav_Menu.findItem(R.id.uploadBuktiPembayaran).setVisible(false);
@@ -552,7 +553,7 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.jadwalsidang) {
             changeFragmentListUploadKriteria(new FrgJadwalSidang(), status, userId);
         } else if (id == R.id.jadwaldosen) {
-
+            changeFragmentListUploadKriteria(new FrgJadwalDosen(), status, userId);
         } else if (id == R.id.pengumuman) {
             changeFragmentListUploadKriteria(new FrgPengumuman(), status, userId);
         } else if (id == R.id.uploadBuktiPembayaran) {

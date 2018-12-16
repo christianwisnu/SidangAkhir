@@ -63,6 +63,21 @@ public interface BaseApiService {
                                         @Field("userId") String userId,
                                         @Field("tglNow") String tglNow);
 
+    @FormUrlEncoded
+    @POST("insertJadwalDosen.php")
+    Call<ResponseBody> insertJadwalDosen(@Field("idDosen") String userId,
+                                        @Field("jamMulai") String jamMulai,
+                                        @Field("jamAkhir") String jamAkhir,
+                                        @Field("hari") String hari);
+
+    @FormUrlEncoded
+    @POST("updateJadwalDosen.php")
+    Call<ResponseBody> updateJadwalDosen(@Field("idDosen") String userId,
+                                         @Field("line") Integer line,
+                                        @Field("jamMulai") String jamMulai,
+                                        @Field("jamAkhir") String jamAkhir,
+                                        @Field("hari") String hari);
+
     @Multipart
     @POST("uploadPembayaran.php?apicall=upload")
     Call<ResponseBody> uploadImageBayar(@Part("image\"; filename=\"myfile.jpg\" ") RequestBody file,

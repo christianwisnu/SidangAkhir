@@ -41,4 +41,14 @@
         <item>Dosen</item>
         <item>Administrator</item>
     </string-array>
+
+    <string-array name="country_arrays_hari">
+        <item>Senin</item>
+        <item>Selasa</item>
+        <item>Rabu</item>
+        <item>Kamis</item>
+        <item>Jumat</item>
+        <item>Sabtu</item>
+        <item>Minggu</item>
+    </string-array>
 </resources>

@@ -32,6 +32,8 @@
         <activity android:name=".Register" />
         <activity android:name=".PengumumanActivity" />
         <activity android:name=".InputDataSkripsiActivity" />
+        <activity android:name=".JadwalDosenActivity"
+            android:configChanges="keyboardHidden|orientation"/>
         <activity android:name=".UploadPembayaran" />
         <activity android:name=".UploadBimbingan" />
         <activity android:name=".ViewPengumumanActivity" />

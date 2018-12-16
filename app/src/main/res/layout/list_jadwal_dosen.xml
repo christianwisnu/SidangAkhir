@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <ListView
+        android:divider="@color/md_grey_500"
+        android:id="@+id/listJadwalDosen"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+    </ListView>
+
+    <ImageView
+        android:id="@+id/imgListJadwalDosennAdd"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_gravity="bottom|right"
+        android:layout_margin="15dp"
+        android:background="@drawable/slctcyclered"
+        android:scaleType="centerInside"
+        android:src="@mipmap/ic_action_add" />
+
+    <ProgressBar
+        android:id="@+id/prbListJadwalDosenStatus"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/txtListJadwalDosenStatus"
+        android:textStyle="bold"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+</FrameLayout>
