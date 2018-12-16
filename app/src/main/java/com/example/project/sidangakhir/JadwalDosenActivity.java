@@ -48,6 +48,8 @@ public class JadwalDosenActivity extends AppCompatActivity {
     private Spinner sphari;
     private SharedPreferences shared;
     private Integer line;
+    private Date awal, akhir;
+    private Calendar cal;
 
     @Override
     protected void onCreate( Bundle savedInstanceState) {
@@ -68,6 +70,9 @@ public class JadwalDosenActivity extends AppCompatActivity {
         mApiService         = Link.getAPIService();
         pDialog = new ProgressDialog(this);
         pDialog.setCancelable(false);
+        cal = Calendar.getInstance();
+        awal = cal.getTime();
+        akhir = cal.getTime();
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
         imgBack = (ImageView)findViewById(R.id.imgJadwalDosenBack);
@@ -100,21 +105,21 @@ public class JadwalDosenActivity extends AppCompatActivity {
         imgJamAwal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                pilihJam(edJamAwal);
+                pilihJam(edJamAwal, "AWAL");
             }
         });
 
         imgJamAkhir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                pilihJam(edJamAkhir);
+                pilihJam(edJamAkhir, "AKHIR");
             }
         });
 
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(validateJamAwal() && validateJamAkhir() ){
+                if(validateJamAwal() && validateJamAkhir() && validateJam()){
                     AlertDialog.Builder builder = new AlertDialog.Builder(JadwalDosenActivity.this);
                     builder.setTitle("Konfirmasi");
                     builder.setMessage("Data akan diproses?")
@@ -254,7 +259,18 @@ public class JadwalDosenActivity extends AppCompatActivity {
         return value;
     }
 
-    private void pilihJam(final EditText edittext) {
+    private boolean validateJam() {
+        boolean value;
+        if (awal.compareTo(akhir) > 0){
+            value=false;
+            Toast.makeText(JadwalDosenActivity.this, "Jam Akhir harus lebih besar dari jam awal!", Toast.LENGTH_LONG).show();
+        } else {
+            value=true;
+        }
+        return value;
+    }
+
+    private void pilihJam(final EditText edittext, final String stat) {
         Calendar cal = Calendar.getInstance();
         int hour = cal.get(Calendar.HOUR_OF_DAY);
         int minute = cal.get(Calendar.MINUTE);
@@ -272,6 +288,22 @@ public class JadwalDosenActivity extends AppCompatActivity {
                     sHrs = "0" + selectedHour;
                 } else {
                     sHrs = String.valueOf(selectedHour);
+                }
+                Calendar tempCalendar = Calendar.getInstance();
+                if(stat.equals("AWAL")){
+                    tempCalendar.setTime(awal);
+                    tempCalendar.set(Calendar.HOUR_OF_DAY, selectedHour);
+                    tempCalendar.set(Calendar.MINUTE, selectedMinute);
+                    tempCalendar.set(Calendar.SECOND,00);
+                    tempCalendar.set(Calendar.MILLISECOND,000);
+                    awal = tempCalendar.getTime();
+                }else{
+                    tempCalendar.setTime(akhir);
+                    tempCalendar.set(Calendar.HOUR_OF_DAY, selectedHour);
+                    tempCalendar.set(Calendar.MINUTE, selectedMinute);
+                    tempCalendar.set(Calendar.SECOND,00);
+                    tempCalendar.set(Calendar.MILLISECOND,000);
+                    akhir = tempCalendar.getTime();
                 }
                 setSelectedTime(sHrs, sMins, edittext);
             }

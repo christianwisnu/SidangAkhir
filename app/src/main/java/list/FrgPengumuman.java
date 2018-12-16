@@ -196,6 +196,7 @@ public class FrgPengumuman extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        columnlist= new ArrayList<ColPengumuman>();
         adapter		= new AdpPengumuman(getActivity(), R.layout.col_pengumuman, columnlist, status, userId);
         lsvupload.setAdapter(adapter);
         getDataUpload(Link.BASE_URL_API+getUpload, df.format(tglFrom), df.format(tglNowLast));

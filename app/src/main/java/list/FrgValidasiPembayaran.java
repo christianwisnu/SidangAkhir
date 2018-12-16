@@ -186,6 +186,7 @@ public class FrgValidasiPembayaran extends android.support.v4.app.Fragment  {
     @Override
     public void onResume() {
         super.onResume();
+        columnlist= new ArrayList<ColSidang>();
         adapter		= new AdpValidasiPembayaran(getActivity(), R.layout.col_validasi_pembayaran, columnlist, idAdmin);
         lsvupload.setAdapter(adapter);
         getDataUpload(Link.BASE_URL_API+getUpload);

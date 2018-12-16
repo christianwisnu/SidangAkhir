@@ -184,6 +184,7 @@ public class FrgValidasiBimbingan extends android.support.v4.app.Fragment  {
     @Override
     public void onResume() {
         super.onResume();
+        columnlist= new ArrayList<ColSidang>();
         adapter		= new AdpValidasiBimbingan(getActivity(), R.layout.col_validasi_bimbingan, columnlist, idAdmin);
         lsvupload.setAdapter(adapter);
         getDataUpload(Link.BASE_URL_API+getUpload);
